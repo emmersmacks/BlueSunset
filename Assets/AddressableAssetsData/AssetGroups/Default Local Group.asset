@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Default Local Group
+  m_GUID: d7ebb34cafbc5d94da10ee92f91495f6
+  m_SerializeEntries:
+  - m_GUID: 102365c19eda09445a1e02ca062f86a6
+    m_Address: Chunk/Hard
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a2a377b226b42e9bdfc07562c1e2051
+    m_Address: Chunk/Easy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84ae2c90a9d644fab638cb6276e5831a
+    m_Address: DefaultSequenceModule
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SequenceModule
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84c1dd3bce6c6a74d86a971950c825ca
+    m_Address: Obstacles/Traffic
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9749b3a48699654eb4b27899efde40c
+    m_Address: Chunk/Normal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d79714eeb12dc6440bc26a79798d15bd
+    m_Address: Obstacles/Deer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eda3526d82fb89f4ca33f46fc679c01d
+    m_Address: AppBootstrap
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 692d8d255796efa4397029a3cc311dba, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 213da728cbf2362458eba924fc51243d, type: 2}
+    - {fileID: 11400000, guid: 06922a4e12760634494fe53c44b49257, type: 2}

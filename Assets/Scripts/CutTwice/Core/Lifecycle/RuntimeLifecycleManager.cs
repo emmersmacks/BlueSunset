@@ -1,0 +1,132 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using CutTwice.Common;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
+
+namespace CutTwice.Game
+{
+    public class RuntimeLifecycleManager : MonoBehaviour
+    {
+        private List<IInitializable> _initializableList = new ();
+        private List<ITickable> _tickableList = new ();
+        private List<IFixedTickable> _fixedTickableList = new ();
+        private List<IDisposable> _disposableList = new ();
+
+        private readonly List<object> _pendingUnregister = new();
+
+        public async UniTask InitAsync(CancellationToken ct)
+        {
+            foreach (var initializable in _initializableList)
+            {
+                await initializable.InitAsync(ct);
+            }
+        }
+        
+        public async UniTask RuntimeRegister(object obj, CancellationToken ct)
+        {
+            Register(obj);
+            if (obj is IInitializable initializable)
+            {
+                await initializable.InitAsync(ct);
+            }
+        }
+
+        public T Register<T>(T obj)
+        {
+            if (obj is IInitializable initializable)
+            {
+                _initializableList.Add(initializable);
+            }
+            
+            if (obj is ITickable tickable)
+            {
+                _tickableList.Add(tickable);
+            }
+            
+            if (obj is IFixedTickable fixedTickable)
+            {
+                _fixedTickableList.Add(fixedTickable);
+            }
+            
+            if (obj is IDisposable disposable)
+            {
+                _disposableList.Add(disposable);
+            }
+            
+            return obj;
+        }
+
+        public void Unregister(object obj)
+        {
+            _pendingUnregister.Add(obj);
+        }
+
+        private void Update()
+        {
+            foreach (var tickable in _tickableList)
+            {
+                tickable.Tick();
+            }
+            
+            FlushUnregister();
+        }
+
+        private void FixedUpdate()
+        {
+            foreach (var tickable in _fixedTickableList)
+            {
+                tickable.FixedTick();
+            }
+
+            FlushUnregister();
+        }
+        
+        private void FlushUnregister()
+        {
+            if (_pendingUnregister.Count == 0)
+                return;
+
+            foreach (var obj in _pendingUnregister)
+            {
+                if (obj is IInitializable initializable)
+                {
+                    _initializableList.Remove(initializable);
+                }
+
+                if (obj is ITickable tickable)
+                {
+                    _tickableList.Remove(tickable);
+                }
+
+                if (obj is IFixedTickable fixedTickable)
+                {
+                    _fixedTickableList.Remove(fixedTickable);
+                }
+
+                if (obj is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                    _disposableList.Remove(disposable);
+                }
+            }
+
+            _pendingUnregister.Clear();
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var disposable in _disposableList)
+            {
+                disposable.Dispose();
+            }
+            
+            _initializableList = null;
+            _tickableList = null;
+            _fixedTickableList = null;
+            _disposableList = null;
+        }
+    }
+}

@@ -1,0 +1,14 @@
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
+
+namespace CutTwice.Common
+{
+    /// <summary>
+    /// Simple interface for components that require parameterless initialization.
+    /// </summary>
+    public interface IInitializable
+    {
+        UniTask InitAsync(CancellationToken ct);
+    }
+}
+

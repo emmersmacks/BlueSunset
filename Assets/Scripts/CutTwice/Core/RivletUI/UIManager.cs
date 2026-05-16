@@ -1,0 +1,181 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using CutTwice.Common;
+using Cysharp.Threading.Tasks;
+using Infrastructure.Events;
+using UnityEngine;
+
+namespace CutTwice.Core.RivletUI
+{
+    /// <summary>
+    /// Central manager for registered windows. Does NOT instantiate windows — it only manages already-created controllers.
+    /// Windows are registered by a strongly-typed identifier TWindow.
+    /// UIManager subscribes to Open/Close requests for registered windows on the EventBus.
+    /// </summary>
+    public class UIManager : IInitializable, IDisposable
+    {
+        private readonly Dictionary<Type, RegisteredWindow> _registry = new();
+        private readonly List<Type> _stack = new();
+        
+        private Action<PopWindowRequest> _globalPopHandler;
+
+        public UniTask InitAsync(CancellationToken ct)
+        {
+            // subscribe to global pop request (untyped)
+            _globalPopHandler = _ => Pop();
+            EventBus.Subscribe(_globalPopHandler);
+            return UniTask.CompletedTask;
+        }
+
+        public void Register<TWindow>(TWindow window) where TWindow : IWindow
+        {
+            var key = typeof(TWindow);
+            if (_registry.ContainsKey(key))
+                throw new InvalidOperationException($"Window type {key} already registered");
+
+            // create typed handlers so we can subscribe/unsubscribe later
+            Action<OpenWindowRequest<TWindow>> openHandler = req => window.Show(req?.Payload);
+            Action<CloseWindowRequest<TWindow>> closeHandler = _ => window.Hide();
+            Action<PushWindowRequest<TWindow>> pushHandler = req => Push<TWindow>(req?.Payload);
+            Action<PopToWindowRequest<TWindow>> popToHandler = _ => PopTo<TWindow>();
+
+            EventBus.Subscribe(openHandler);
+            EventBus.Subscribe(closeHandler);
+            EventBus.Subscribe(pushHandler);
+            EventBus.Subscribe(popToHandler);
+
+            _registry[key] = new RegisteredWindow
+            {
+                Window = window,
+                Unsubscribe = () =>
+                {
+                    EventBus.Unsubscribe(openHandler);
+                    EventBus.Unsubscribe(closeHandler);
+                    EventBus.Unsubscribe(pushHandler);
+                    EventBus.Unsubscribe(popToHandler);
+                }
+            };
+        }
+
+        public void Unregister<TWindow>() where TWindow : IWindow
+        {
+            var key = typeof(TWindow);
+            if (!_registry.TryGetValue(key, out var reg))
+                return;
+
+            reg.Unsubscribe?.Invoke();
+
+            // dispose controller
+            _registry.Remove(key);
+        }
+
+        // Push - hide current top and show requested window, push it to stack
+        public void Push<TWindow>(object payload = null) where TWindow : IWindow
+        {
+            var key = typeof(TWindow);
+            if (!_registry.TryGetValue(key, out var reg))
+                throw new KeyNotFoundException($"Window {key} is not registered");
+
+            // if already top - simply show with payload
+            if (_stack.Count > 0 && _stack[_stack.Count - 1] == key)
+            {
+                reg.Window.Show(payload);
+                return;
+            }
+
+            // hide previous top
+            if (_stack.Count > 0)
+            {
+                var prev = _stack[_stack.Count - 1];
+                if (_registry.TryGetValue(prev, out var prevReg))
+                    prevReg.Window.Hide();
+            }
+
+            // remove previous occurrence if exists (bring to top)
+            var existingIndex = _stack.IndexOf(key);
+            if (existingIndex >= 0)
+                _stack.RemoveAt(existingIndex);
+
+            _stack.Add(key);
+            reg.Window.Show(payload);
+        }
+
+        // Pop - hide top and show previous if exists
+        public void Pop()
+        {
+            if (_stack.Count == 0)
+                return;
+
+            var top = _stack[_stack.Count - 1];
+            if (_registry.TryGetValue(top, out var topReg))
+            {
+                topReg.Window.Hide();
+            }
+
+            _stack.RemoveAt(_stack.Count - 1);
+
+            if (_stack.Count > 0)
+            {
+                var newTop = _stack[_stack.Count - 1];
+                if (_registry.TryGetValue(newTop, out var newTopReg))
+                {
+                    newTopReg.Window.Show();
+                }
+            }
+        }
+
+        // PopTo - pop until target window becomes top (inclusive behavior: target remains visible)
+        public void PopTo<TWindow>() where TWindow : IWindow
+        {
+            var key = typeof(TWindow);
+            var idx = _stack.LastIndexOf(key);
+            if (idx < 0)
+                return; // target not in stack
+
+            // pop until we reach target at top
+            while (_stack.Count - 1 > idx)
+                Pop();
+        }
+
+        public void Show<TWindow>(object payload = null) where TWindow : IWindow
+        {
+            var key = typeof(TWindow);
+            if (!_registry.TryGetValue(key, out var reg))
+                throw new KeyNotFoundException($"Window {key} is not registered");
+
+            reg.Window.Show(payload);
+        }
+
+        public void Hide<TWindow>() where TWindow : IWindow
+        {
+            var key = typeof(TWindow);
+            if (!_registry.TryGetValue(key, out var reg))
+                return;
+
+            reg.Window.Hide();
+        }
+
+        public void Dispose()
+        {
+            foreach (var reg in _registry.Values)
+            {
+                reg.Unsubscribe?.Invoke();
+            }
+            
+            _registry.Clear();
+            if (_globalPopHandler != null)
+                EventBus.Unsubscribe(_globalPopHandler);
+        }
+
+        private class RegisteredWindow
+        {
+            public IWindow Window;
+            public Action Unsubscribe;
+        }
+    }
+}
+
+
+
+

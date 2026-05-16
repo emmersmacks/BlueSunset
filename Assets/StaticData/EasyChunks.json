@@ -1,0 +1,35 @@
+﻿{
+  "ChunkType": "Easy",
+  "Chunks" : [
+    {
+      "Id" : "DoubleDeerDoubleTraffic",
+      "Actions": [
+        { "Type": "SpawnDeer",
+          "Parameters": {
+            "PrefabKey": "Obstacles/Deer",
+            "Position": "Line1XOnly"
+          } },
+        { "Type": "Delay", "Parameters": { "Value": 1.8 } },
+        { "Type": "SpawnTraffic",
+          "Parameters": {
+            "PrefabKey": "Obstacles/Traffic",
+            "Position": "Line3"
+          } },
+
+        { "Type": "Delay", "Parameters": { "Value": 3 } },
+
+        { "Type": "SpawnDeer",
+          "Parameters": {
+            "PrefabKey": "Obstacles/Deer",
+            "Position": "Line2XOnly"
+          } },
+        { "Type": "Delay", "Parameters": { "Value": 1.8 } },
+        { "Type": "SpawnTraffic",
+          "Parameters": {
+            "PrefabKey": "Obstacles/Traffic",
+            "Position": "Line4"
+          } }
+      ]
+    }
+  ]
+}
