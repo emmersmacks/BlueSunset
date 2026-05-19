@@ -1,39 +1,64 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using CutTwice.Core;
+using CutTwice.ObstacleSequence.Actions;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
+using Random = System.Random;
 
 namespace CutTwice.ObstacleSequence
 {
     public class ObstacleRuntimeController
     {
         private ObstacleSequenceModuleRuntime _sequenceModuleRuntime;
+        private SequenceChunkRuntime[] _chunksOrder;
         
-        public async Task Init(ObstacleSequenceModuleRuntime sequence, CancellationToken ct)
+        private bool _randomize;
+        
+        public async Task Init(ObstacleSequenceModuleRuntime sequence, bool randomize, CancellationToken ct)
         {
-            foreach (var command in sequence.Commands)
+            foreach (var chunks in sequence.Chunks)
             {
-                if (ct.IsCancellationRequested)
+                foreach (var command in chunks.Actions)
                 {
-                    return;
-                }
+                    if (ct.IsCancellationRequested)
+                    {
+                        return;
+                    }
                 
-                await command.Init(ct);
+                    await command.Init(ct);
+                }
             }
             
             _sequenceModuleRuntime = sequence;
+            _randomize = randomize;
         }
 
         public async UniTask Run(CancellationToken ct)
         {
-            foreach (var command in _sequenceModuleRuntime.Commands)
+            if (_randomize)
             {
-                if (ct.IsCancellationRequested)
-                {
-                    return;
-                }
-                
-                await command.Run(ct);
+                var random = new Random();
+                _chunksOrder = _sequenceModuleRuntime.Chunks.Randomize(random).ToArray();
             }
+            
+            foreach (var chunk in _chunksOrder)
+            {
+                Debug.Log("[TEST] Start Chunk: " + chunk.Name);
+                
+                foreach (var command in chunk.Actions)
+                {
+                    if (ct.IsCancellationRequested)
+                    {
+                        return;
+                    }
+                
+                    await command.Run(ct);
+                }
+            }
+
+            _chunksOrder = null;
         }
     }
 }

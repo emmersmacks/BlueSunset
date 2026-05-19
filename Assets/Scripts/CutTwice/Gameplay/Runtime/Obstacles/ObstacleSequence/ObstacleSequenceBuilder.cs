@@ -42,31 +42,37 @@ namespace CutTwice.ObstacleSequence
         public ObstacleSequenceModuleRuntime BuildModule(SequenceModuleDto module)
         {
             var moduleRuntime = new ObstacleSequenceModuleRuntime();
-            var actions = new List<ISequenceActionRuntime>();
+            var chunks = new List<SequenceChunkRuntime>();
             
             foreach(var chunkRef in module.Sequences)
             {
+                var chunkRuntime = new SequenceChunkRuntime
+                {
+                    Name = chunkRef.Id
+                };
+
                 var actionDtoArr = _allChunks[chunkRef.Id];
                 foreach (var actionDto in actionDtoArr)
                 {
                     switch (actionDto.Type)
                     {
                         case ActionType.Delay:
-                            actions.Add(new DelayAction(actionDto.Parameters.ToObject<DelayAction.Parameters>()));
+                            chunkRuntime.Actions.Add(new DelayAction(actionDto.Parameters.ToObject<DelayAction.Parameters>()));
                             break;
                         case ActionType.SpawnTraffic:
                             var spawnParameters = actionDto.Parameters.ToObject<SpawnTrafficAction.Parameters>();
-                            actions.Add(new SpawnTrafficAction(spawnParameters, _trafficFactory, _lifecycleManager));
+                            chunkRuntime.Actions.Add(new SpawnTrafficAction(spawnParameters, _trafficFactory, _lifecycleManager));
                             break;
                         case ActionType.SpawnDeer:
                             var spawnOnTileParameters = actionDto.Parameters.ToObject<SpawnDeerAction.Parameters>();
-                            actions.Add(new SpawnDeerAction(spawnOnTileParameters, _infiniteRoadController, _deerFactory, _lifecycleManager));
+                            chunkRuntime.Actions.Add(new SpawnDeerAction(spawnOnTileParameters, _infiniteRoadController, _deerFactory, _lifecycleManager));
                             break;
                     }
                 }
+                chunks.Add(chunkRuntime);
             }
             
-            moduleRuntime.Commands = actions.ToArray();
+            moduleRuntime.Chunks = chunks.ToArray();
             return moduleRuntime;
         }
     }

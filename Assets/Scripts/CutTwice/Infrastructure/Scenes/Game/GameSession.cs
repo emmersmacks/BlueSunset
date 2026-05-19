@@ -37,21 +37,30 @@ namespace CutTwice.Game
             _destroyCancellationToken = ct;
             _sessionCancellationTokenSource = new CancellationTokenSource();
             EventBus.Subscribe<GameOverEvent>(OnGameOverRequested);
-            StartSequenceAsync(new SequenceModulePreviewDto { Name = "DefaultSequenceModule" }, _sessionCancellationTokenSource.Token).Forget(Debug.LogException);
+            StartSequenceAsync(new SequenceModulePreviewDto { Name = "DefaultSequenceModule" }, true, true, _sessionCancellationTokenSource.Token).Forget(Debug.LogException);
             return UniTask.CompletedTask;
         }
 
-        private async UniTask StartSequenceAsync(SequenceModulePreviewDto modulePreviewDto, CancellationToken ct)
+        private async UniTask StartSequenceAsync(SequenceModulePreviewDto modulePreviewDto, bool isLoop, bool randomize,
+            CancellationToken ct)
         {
             _gameStarted = true;
             
             var dto = await _service.LoadModuleAsync(modulePreviewDto, ct);
-            
             await _builder.Init(ct);
+            
             var sequence = _builder.BuildModule(dto);
+            await _runtime.Init(sequence, randomize, ct);
 
-            await _runtime.Init(sequence, ct);
-            await _runtime.Run(ct);
+            do
+            {
+                if (ct.IsCancellationRequested)
+                {
+                    break;
+                }
+                
+                await _runtime.Run(ct);
+            } while (isLoop);
         }
 
         public void Tick()

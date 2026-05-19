@@ -4,6 +4,6 @@ namespace CutTwice.ObstacleSequence
 {
     public class ObstacleSequenceModuleRuntime
     {
-        public ISequenceActionRuntime[] Commands;
+        public SequenceChunkRuntime[] Chunks;
     }
 }
