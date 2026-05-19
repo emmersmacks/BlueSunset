@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using CutTwice.Common.Infrastructure;
-using CutTwice.Controllers;
+﻿using CutTwice.Core.Initialization;
+using CutTwice.Core.Lifecycle;
 using CutTwice.Core.RivletUI;
-using CutTwice.Infrastructure.Factories;
-using CutTwice.ObstacleSequence;
-using CutTwice.ObstacleSequence.ModuleLoader;
-using CutTwice.ObstacleSequence.Services;
-using CutTwice.Scenario;
-using CutTwice.Scenario.Act1;
-using CutTwice.UI;
+using CutTwice.Gameplay.Factories;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.ModuleLoader;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Services;
+using CutTwice.Gameplay.Runtime.Player;
+using CutTwice.Gameplay.Runtime.Road;
+using CutTwice.Gameplay.Runtime.Scenario;
+using CutTwice.Gameplay.Runtime.Scenario.Stages;
+using CutTwice.UI.Game.GameHUD;
+using CutTwice.UI.Game.GameHUD.SleepBar;
+using CutTwice.UI.Game.GameHUD.TimePanel;
 using CutTwice.UI.Game.GameOver;
 using CutTwice.UI.Game.GameOver.MenuExitButton;
 using CutTwice.UI.Game.GameOver.RestartButton;
-using CutTwice.UI.SleepBar;
-using UnityEngine;
-using UnityEngine.Rendering;
 
-namespace CutTwice.Game
+namespace CutTwice.Infrastructure.Scenes.Game
 {
     public class GameCompositionRoot : CompositionRoot
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CutTwice.ObstacleSequence.Actions
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Actions
 {
     public class SequenceChunkRuntime
     {

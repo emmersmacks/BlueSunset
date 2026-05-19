@@ -1,8 +1,8 @@
 ﻿using System.Threading;
-using CutTwice.ObstacleSequence.ModuleLoader.Dto;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.ModuleLoader.Dto;
 using Cysharp.Threading.Tasks;
 
-namespace CutTwice.ObstacleSequence.ModuleLoader
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.ModuleLoader
 {
     /// <summary>
     /// Sequence modules loader.

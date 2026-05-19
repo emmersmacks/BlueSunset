@@ -1,9 +1,9 @@
 ﻿using System;
-using CutTwice.Common;
+using CutTwice.Core.Lifecycle;
 using CutTwice.Core.RivletUI;
-using CutTwice.Game;
+using CutTwice.Infrastructure.Scenes.Game;
 
-namespace CutTwice.UI
+namespace CutTwice.UI.Game.GameHUD.TimePanel
 {
     public class TimePanelController : WindowControllerBase<TimePanelView>, ITickable
     {

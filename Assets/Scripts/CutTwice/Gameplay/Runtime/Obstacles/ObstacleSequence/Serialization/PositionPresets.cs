@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using CutTwice.ObstacleSequence.Serialization.SimpleTypes;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Serialization.SimpleTypes;
 
-namespace CutTwice.ObstacleSequence.Serialization
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Serialization
 {
     public static class PositionPresets
     {

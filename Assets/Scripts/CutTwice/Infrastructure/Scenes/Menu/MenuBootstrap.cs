@@ -1,12 +1,11 @@
 ﻿using System.Threading;
-using CutTwice.Common.Infrastructure;
+using CutTwice.Core.EventBus;
+using CutTwice.Core.Initialization;
 using CutTwice.Core.RivletUI;
-using CutTwice.Game;
 using CutTwice.UI.MainMenu.Menu;
 using Cysharp.Threading.Tasks;
-using Infrastructure.Events;
 
-namespace CutTwice.Menu
+namespace CutTwice.Infrastructure.Scenes.Menu
 {
     public class MenuBootstrap : Bootstrap
     {

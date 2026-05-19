@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 
-namespace CutTwice.ObstacleSequence.Actions
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Actions
 {
     public interface ISequenceActionRuntime
     {

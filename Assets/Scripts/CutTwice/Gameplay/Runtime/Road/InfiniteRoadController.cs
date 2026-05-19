@@ -1,8 +1,8 @@
-﻿using CutTwice.Common;
+﻿using CutTwice.Core.Lifecycle;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace CutTwice.Controllers
+namespace CutTwice.Gameplay.Runtime.Road
 {
     public class InfiniteRoadController : ITickable
     {

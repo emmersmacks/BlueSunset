@@ -1,9 +1,9 @@
 ﻿using System;
-using CutTwice.ObstacleSequence.Serialization.SimpleTypes;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Serialization.SimpleTypes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace CutTwice.ObstacleSequence.Serialization
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Serialization
 {
     public class SimplePositionJsonConverter : JsonConverter<SimplePosition>
     {

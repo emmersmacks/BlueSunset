@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CutTwice.Controllers
+namespace CutTwice.Gameplay.Runtime.Sound
 {
     public class OneShotSoundController
     {

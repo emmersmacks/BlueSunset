@@ -1,7 +1,8 @@
 ﻿using System.Threading;
+using CutTwice.Core.GameStates;
 using Cysharp.Threading.Tasks;
 
-namespace CutTwice.GameStates
+namespace CutTwice.Infrastructure.Scenes.App.States
 {
     public class BootstrapState : IGameState
     {

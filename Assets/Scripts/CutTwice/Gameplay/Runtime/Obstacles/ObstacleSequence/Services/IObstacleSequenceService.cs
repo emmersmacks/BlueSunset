@@ -1,9 +1,9 @@
 ﻿using System.Threading;
-using CutTwice.ObstacleSequence.ModuleLoader.Dto;
-using CutTwice.Services;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.ModuleLoader.Dto;
+using CutTwice.Infrastructure.Services;
 using Cysharp.Threading.Tasks;
 
-namespace CutTwice.ObstacleSequence.Services
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Services
 {
     public interface IObstacleSequenceService : IService
     {

@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine;
 
-namespace CutTwice.Controllers
+namespace CutTwice.Gameplay.Runtime.Road
 {
     public class InfiniteRoadPresenter : MonoBehaviour
     {

@@ -2,12 +2,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using CutTwice.Core;
-using CutTwice.ObstacleSequence.Actions;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Actions;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Random = System.Random;
 
-namespace CutTwice.ObstacleSequence
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence
 {
     public class ObstacleRuntimeController
     {

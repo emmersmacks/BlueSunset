@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Threading;
-using CutTwice.Common;
-using CutTwice.Controllers;
+using CutTwice.Core.Addressables;
 using CutTwice.Core.Factory;
-using CutTwice.Game;
-using CutTwice.ObstacleSequence.Serialization;
-using CutTwice.ObstacleSequence.Serialization.SimpleTypes;
+using CutTwice.Core.Lifecycle;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Serialization;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Serialization.SimpleTypes;
+using CutTwice.Gameplay.Runtime.Road;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace CutTwice.ObstacleSequence.Actions
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Actions
 {
     public class SpawnDeerAction : ISequenceActionRuntime
     {

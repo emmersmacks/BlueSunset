@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using CutTwice.Common;
+using CutTwice.Core.Lifecycle;
 using Cysharp.Threading.Tasks;
-using Infrastructure.Events;
 using UnityEngine;
 
 namespace CutTwice.Core.RivletUI
@@ -24,7 +23,7 @@ namespace CutTwice.Core.RivletUI
         {
             // subscribe to global pop request (untyped)
             _globalPopHandler = _ => Pop();
-            EventBus.Subscribe(_globalPopHandler);
+            EventBus.EventBus.Subscribe(_globalPopHandler);
             return UniTask.CompletedTask;
         }
 
@@ -40,20 +39,20 @@ namespace CutTwice.Core.RivletUI
             Action<PushWindowRequest<TWindow>> pushHandler = req => Push<TWindow>(req?.Payload);
             Action<PopToWindowRequest<TWindow>> popToHandler = _ => PopTo<TWindow>();
 
-            EventBus.Subscribe(openHandler);
-            EventBus.Subscribe(closeHandler);
-            EventBus.Subscribe(pushHandler);
-            EventBus.Subscribe(popToHandler);
+            EventBus.EventBus.Subscribe(openHandler);
+            EventBus.EventBus.Subscribe(closeHandler);
+            EventBus.EventBus.Subscribe(pushHandler);
+            EventBus.EventBus.Subscribe(popToHandler);
 
             _registry[key] = new RegisteredWindow
             {
                 Window = window,
                 Unsubscribe = () =>
                 {
-                    EventBus.Unsubscribe(openHandler);
-                    EventBus.Unsubscribe(closeHandler);
-                    EventBus.Unsubscribe(pushHandler);
-                    EventBus.Unsubscribe(popToHandler);
+                    EventBus.EventBus.Unsubscribe(openHandler);
+                    EventBus.EventBus.Unsubscribe(closeHandler);
+                    EventBus.EventBus.Unsubscribe(pushHandler);
+                    EventBus.EventBus.Unsubscribe(popToHandler);
                 }
             };
         }
@@ -165,7 +164,7 @@ namespace CutTwice.Core.RivletUI
             
             _registry.Clear();
             if (_globalPopHandler != null)
-                EventBus.Unsubscribe(_globalPopHandler);
+                EventBus.EventBus.Unsubscribe(_globalPopHandler);
         }
 
         private class RegisteredWindow

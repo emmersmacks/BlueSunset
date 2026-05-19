@@ -1,8 +1,8 @@
 ﻿using System;
-using CutTwice.Common;
+using CutTwice.Core.Lifecycle;
 using UnityEngine;
 
-namespace CutTwice.Controllers
+namespace CutTwice.Gameplay.Runtime.Player
 {
     public class PlayerCarController : ITickable
     {

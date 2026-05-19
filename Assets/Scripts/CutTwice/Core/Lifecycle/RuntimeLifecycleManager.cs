@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using CutTwice.Common;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace CutTwice.Game
+namespace CutTwice.Core.Lifecycle
 {
     public class RuntimeLifecycleManager : MonoBehaviour
     {

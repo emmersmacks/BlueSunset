@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 
-namespace CutTwice.Common
+namespace CutTwice.Core.Lifecycle
 {
     /// <summary>
     /// Simple interface for components that require parameterless initialization.

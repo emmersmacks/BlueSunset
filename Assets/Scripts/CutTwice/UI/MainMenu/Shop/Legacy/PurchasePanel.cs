@@ -1,5 +1,5 @@
 ﻿using System;
-using CutTwice.Game;
+using CutTwice.Infrastructure.Scenes.Game;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,7 +11,7 @@ using YG.Utils.Pay;
 #if UNITY_EDITOR
 #endif
 
-namespace CutTwice.UI.MainMenu
+namespace CutTwice.UI.MainMenu.Shop.Legacy
 {
     public class PurchasePanel : MonoBehaviour
     {

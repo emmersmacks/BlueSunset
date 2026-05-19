@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace CutTwice.Cosmetics
+namespace CutTwice.Gameplay.Runtime.Cosmetics
 {
     [CreateAssetMenu(fileName = "PurchasesSettings", menuName = "CutTwice/PurchasesSettings")]
     public class SteeringWheelsSettings : ScriptableObject

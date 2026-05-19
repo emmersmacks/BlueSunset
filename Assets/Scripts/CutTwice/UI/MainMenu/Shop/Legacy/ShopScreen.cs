@@ -2,7 +2,7 @@
 using YG;
 using YG.Insides;
 
-namespace CutTwice.UI.MainMenu
+namespace CutTwice.UI.MainMenu.Shop.Legacy
 {
     public class ShopScreen : MonoBehaviour
     {

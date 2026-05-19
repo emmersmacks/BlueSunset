@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Events
+﻿namespace CutTwice.Core.EventBus
 {
     public struct GameOverEvent
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CutTwice.Controllers
+namespace CutTwice.Gameplay.Runtime.Sound
 {
     [RequireComponent(typeof(AudioSource))]
     public class OneShotSoundPresenter : MonoBehaviour

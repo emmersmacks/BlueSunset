@@ -1,5 +1,5 @@
-﻿using CutTwice.Core.RivletUI;
-using Infrastructure.Events;
+﻿using CutTwice.Core.EventBus;
+using CutTwice.Core.RivletUI;
 
 namespace CutTwice.UI.Common.UIBackButton
 {

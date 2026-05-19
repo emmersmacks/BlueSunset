@@ -1,8 +1,8 @@
-﻿using CutTwice.Common;
-using CutTwice.Controllers;
+﻿using CutTwice.Core.Lifecycle;
 using CutTwice.Core.RivletUI;
+using CutTwice.Gameplay.Runtime.Player;
 
-namespace CutTwice.UI.SleepBar
+namespace CutTwice.UI.Game.GameHUD.SleepBar
 {
     public class SleepBarController : WindowControllerBase<SleepBarView>, ITickable
     {

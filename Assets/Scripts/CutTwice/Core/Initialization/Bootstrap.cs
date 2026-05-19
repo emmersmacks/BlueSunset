@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using CutTwice.App;
-using CutTwice.Common;
-using CutTwice.Common.Infrastructure;
+﻿using System.Threading;
+using CutTwice.Core.Addressables;
+using CutTwice.Core.Lifecycle;
+using CutTwice.Infrastructure.Scenes.App;
 using Cysharp.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 
-namespace CutTwice.Game
+namespace CutTwice.Core.Initialization
 {
     public abstract class Bootstrap : MonoBehaviour
     {

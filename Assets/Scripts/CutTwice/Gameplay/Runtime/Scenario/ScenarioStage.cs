@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Threading;
+using CutTwice.Core.Lifecycle;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace CutTwice.Scenario
+namespace CutTwice.Gameplay.Runtime.Scenario
 {
-    public abstract class ScenarioStage : Common.IInitializable
+    public abstract class ScenarioStage : IInitializable
     {
         [Header("Task Label")]
         public string TaskText;

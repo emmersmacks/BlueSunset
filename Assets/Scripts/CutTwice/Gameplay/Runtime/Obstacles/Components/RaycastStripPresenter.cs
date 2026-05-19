@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using Infrastructure.Events;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace CutTwice.Controllers
+namespace CutTwice.Gameplay.Runtime.Obstacles.Components
 {
     /// <summary>
     /// Detects collisions by casting a strip (line) of raycasts between the object's current and previous positions.

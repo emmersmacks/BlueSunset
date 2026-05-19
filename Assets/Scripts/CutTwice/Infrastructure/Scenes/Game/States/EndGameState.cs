@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Threading;
+using CutTwice.Core.EventBus;
+using CutTwice.Core.GameStates;
 using CutTwice.Core.RivletUI;
 using CutTwice.UI.Game.GameOver;
-using CutTwice.UI.MainMenu;
 using Cysharp.Threading.Tasks;
-using Infrastructure.Events;
-using UnityEngine;
-using YG;
-using YG.Utils.LB;
 
-namespace CutTwice.GameStates
+namespace CutTwice.Infrastructure.Scenes.Game.States
 {
     public class EndGameState : IGameState
     {

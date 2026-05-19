@@ -1,10 +1,11 @@
-﻿using CutTwice.Controllers;
-using CutTwice.Core.Factory;
+﻿using CutTwice.Core.Factory;
 using CutTwice.Core.Lifecycle;
+using CutTwice.Gameplay.Runtime.Obstacles;
+using CutTwice.Gameplay.Runtime.Obstacles.Components;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace CutTwice.Infrastructure.Factories
+namespace CutTwice.Gameplay.Factories
 {
     public class DeerFactory : GameObjectFactory
     {

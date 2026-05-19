@@ -1,12 +1,13 @@
 ﻿using System.Threading;
-using CutTwice.Common;
+using CutTwice.Core.EventBus;
+using CutTwice.Core.GameStates;
+using CutTwice.Core.Lifecycle;
 using CutTwice.Core.RivletUI;
-using CutTwice.GameStates;
+using CutTwice.Infrastructure.Scenes.Game.States;
 using CutTwice.UI.MainMenu.Credits;
 using CutTwice.UI.MainMenu.Leaderboard;
 using CutTwice.UI.MainMenu.Shop;
 using Cysharp.Threading.Tasks;
-using Infrastructure.Events;
 using UnityEngine;
 
 namespace CutTwice.UI.MainMenu.Menu.StartGameButton

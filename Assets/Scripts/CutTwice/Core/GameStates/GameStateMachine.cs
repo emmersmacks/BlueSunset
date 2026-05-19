@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using CutTwice.Infrastructure.Scenes.App.States;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
-using Infrastructure.Events;
 
-namespace CutTwice.GameStates
+namespace CutTwice.Core.GameStates
 {
     /// <summary>
     /// MonoBehaviour singleton that manages game states and routes Update/FixedUpdate calls.

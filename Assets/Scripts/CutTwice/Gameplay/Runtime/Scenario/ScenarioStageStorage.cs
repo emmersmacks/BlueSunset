@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CutTwice.Scenario
+namespace CutTwice.Gameplay.Runtime.Scenario
 {
     [CreateAssetMenu(fileName = "ScenarioStageStorage", menuName = "CutTwice/Scenario/ScenarioStageStorage")]
     public class ScenarioStageStorage : ScriptableObject

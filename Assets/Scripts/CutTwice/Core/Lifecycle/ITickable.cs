@@ -1,4 +1,4 @@
-﻿namespace CutTwice.Common
+﻿namespace CutTwice.Core.Lifecycle
 {
     /// <summary>
     /// Simple interface for components that require update every frame.

@@ -1,6 +1,6 @@
-﻿using CutTwice.ObstacleSequence.Actions;
+﻿using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Actions;
 
-namespace CutTwice.ObstacleSequence
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence
 {
     public class ObstacleSequenceModuleRuntime
     {

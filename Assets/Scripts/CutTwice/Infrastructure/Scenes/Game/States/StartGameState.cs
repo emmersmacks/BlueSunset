@@ -1,14 +1,11 @@
 ﻿using System.Threading;
-using CutTwice.Common;
-using CutTwice.Core.RivletUI;
-using CutTwice.UI;
-using CutTwice.UI.Game.GameOver;
+using CutTwice.Core.GameStates;
+using CutTwice.Core.StaticNames;
 using Cysharp.Threading.Tasks;
-using Infrastructure.Events;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace CutTwice.GameStates
+namespace CutTwice.Infrastructure.Scenes.Game.States
 {
     public class StartGameState : IGameState
     {

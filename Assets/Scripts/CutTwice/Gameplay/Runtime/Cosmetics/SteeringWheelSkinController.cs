@@ -1,7 +1,7 @@
-﻿using CutTwice.Game;
+﻿using CutTwice.Infrastructure.Scenes.Game;
 using UnityEngine;
 
-namespace CutTwice.Cosmetics
+namespace CutTwice.Gameplay.Runtime.Cosmetics
 {
     public class SteeringWheelSkinController : MonoBehaviour
     {

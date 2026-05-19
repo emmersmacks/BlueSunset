@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Infrastructure.Events
+namespace CutTwice.Core.EventBus
 {
     /// <summary>
     /// Simple thread-safe static EventBus for publishing and subscribing to typed events.

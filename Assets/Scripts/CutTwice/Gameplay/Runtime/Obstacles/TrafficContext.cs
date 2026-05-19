@@ -1,7 +1,4 @@
-﻿using CutTwice.Core.Lifecycle;
-using UnityEngine;
-
-namespace CutTwice.Controllers
+﻿namespace CutTwice.Gameplay.Runtime.Obstacles
 {
     
 }

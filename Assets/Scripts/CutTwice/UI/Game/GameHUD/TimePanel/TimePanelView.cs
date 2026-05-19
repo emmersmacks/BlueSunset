@@ -1,10 +1,7 @@
-﻿using System;
-using CutTwice.Core.RivletUI;
-using CutTwice.Game;
+﻿using CutTwice.Core.RivletUI;
 using TMPro;
-using UnityEngine;
 
-namespace CutTwice.UI
+namespace CutTwice.UI.Game.GameHUD.TimePanel
 {
     public class TimePanelView : WindowViewBase
     {

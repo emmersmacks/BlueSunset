@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using CutTwice.Common;
-using Infrastructure.Events;
+﻿using CutTwice.Core.EventBus;
+using CutTwice.Core.Lifecycle;
 using UnityEngine;
 
-namespace CutTwice.Controllers
+namespace CutTwice.Gameplay.Runtime.Obstacles.Components
 {
     public class RaycastStripController : IFixedTickable
     {

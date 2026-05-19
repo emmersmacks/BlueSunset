@@ -1,12 +1,13 @@
 ﻿using System.Linq;
 using System.Threading;
-using CutTwice.Common;
-using CutTwice.ObstacleSequence.ModuleLoader.Dto;
+using CutTwice.Core.Addressables;
+using CutTwice.Core.StaticNames;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.ModuleLoader.Dto;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace CutTwice.ObstacleSequence.ModuleLoader
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.ModuleLoader
 {
     public class AddressablesModuleLoader : ISequenceModuleLoader
     {

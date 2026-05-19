@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Threading;
-using CutTwice.Common;
-using CutTwice.GameStates;
-using CutTwice.ObstacleSequence;
-using CutTwice.ObstacleSequence.ModuleLoader.Dto;
-using CutTwice.ObstacleSequence.Services;
-using CutTwice.UI.MainMenu;
+using CutTwice.Core.EventBus;
+using CutTwice.Core.GameStates;
+using CutTwice.Core.Lifecycle;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.ModuleLoader.Dto;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Services;
+using CutTwice.Infrastructure.Scenes.Game.States;
 using Cysharp.Threading.Tasks;
-using Infrastructure.Events;
 using UnityEngine;
-using YG;
 
-namespace CutTwice.Game
+namespace CutTwice.Infrastructure.Scenes.Game
 {
     public class GameSession : IInitializable, IDisposable, ITickable
     {

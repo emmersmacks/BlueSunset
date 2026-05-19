@@ -1,7 +1,9 @@
-﻿using CutTwice.UI.SleepBar;
+﻿using CutTwice.Core.RivletUI;
+using CutTwice.UI.Game.GameHUD.SleepBar;
+using CutTwice.UI.Game.GameHUD.TimePanel;
 using UnityEngine;
 
-namespace CutTwice.UI
+namespace CutTwice.UI.Game.GameHUD
 {
     public class GameHUDWindow : WindowBase
     {

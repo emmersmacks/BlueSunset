@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 
-namespace CutTwice.ObstacleSequence.Actions
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Actions
 {
     public class DelayAction : ISequenceActionRuntime
     {

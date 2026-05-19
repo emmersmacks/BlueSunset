@@ -1,9 +1,8 @@
 ﻿using System;
-using CutTwice.Common;
+using CutTwice.Core.Lifecycle;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
-namespace CutTwice.Controllers
+namespace CutTwice.Gameplay.Runtime.Obstacles.Components
 {
     public class ObjectMoverController : ITickable
     {

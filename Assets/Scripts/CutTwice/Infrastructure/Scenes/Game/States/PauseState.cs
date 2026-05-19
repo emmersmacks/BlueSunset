@@ -1,8 +1,9 @@
 ﻿using System.Threading;
+using CutTwice.Core.GameStates;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace CutTwice.GameStates
+namespace CutTwice.Infrastructure.Scenes.Game.States
 {
     public class PauseState : IGameState
     {

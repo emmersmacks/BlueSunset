@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CutTwice.Controllers
+namespace CutTwice.Gameplay.Runtime.Player
 {
     public class PlayerSleepPresenter : MonoBehaviour
     {

@@ -1,11 +1,11 @@
 ﻿using System;
-using CutTwice.Controllers;
-using CutTwice.UI;
+using CutTwice.Gameplay.Runtime.Road;
+using CutTwice.UI.Game.GameHUD;
 using CutTwice.UI.Game.GameOver;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace CutTwice.Game
+namespace CutTwice.Infrastructure.Scenes.Game
 {
     [Serializable]
     public class GameSceneReferences

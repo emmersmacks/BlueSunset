@@ -1,10 +1,8 @@
 ﻿using System.Threading;
-using CutTwice.Game;
-using CutTwice.ObstacleSequence.ModuleLoader.Dto;
+using CutTwice.Core.GameStates;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 
-namespace CutTwice.GameStates
+namespace CutTwice.Infrastructure.Scenes.Game.States
 {
     public class GameplayState : IGameState
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace CutTwice.ObstacleSequence.Serialization.SimpleTypes
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Serialization.SimpleTypes
 {
     [Serializable]
     public struct SimpleRotation

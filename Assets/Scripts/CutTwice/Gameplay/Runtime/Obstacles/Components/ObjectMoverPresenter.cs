@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace CutTwice.Controllers
+namespace CutTwice.Gameplay.Runtime.Obstacles.Components
 {
     public class ObjectMoverPresenter : MonoBehaviour
     {

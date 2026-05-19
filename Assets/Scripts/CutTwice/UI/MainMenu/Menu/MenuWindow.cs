@@ -1,4 +1,5 @@
-﻿using CutTwice.UI.MainMenu.Menu.StartGameButton;
+﻿using CutTwice.Core.RivletUI;
+using CutTwice.UI.MainMenu.Menu.StartGameButton;
 using UnityEngine;
 
 namespace CutTwice.UI.MainMenu.Menu

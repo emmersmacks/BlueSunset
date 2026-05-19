@@ -1,5 +1,5 @@
-﻿using CutTwice.Common;
-using CutTwice.Core.RivletUI;
+﻿using CutTwice.Core.RivletUI;
+using CutTwice.Core.StaticNames;
 using UnityEngine.SceneManagement;
 
 namespace CutTwice.UI.Game.GameOver.MenuExitButton

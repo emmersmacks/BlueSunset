@@ -1,7 +1,8 @@
 ﻿using System.Threading;
-using CutTwice.Common;
+using CutTwice.Core.GameStates;
+using CutTwice.Core.Lifecycle;
 using CutTwice.Core.RivletUI;
-using CutTwice.GameStates;
+using CutTwice.Infrastructure.Scenes.Game.States;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;

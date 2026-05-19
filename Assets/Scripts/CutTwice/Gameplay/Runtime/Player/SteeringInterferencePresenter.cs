@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using Random = UnityEngine.Random;
 
-namespace CutTwice.Controllers
+namespace CutTwice.Gameplay.Runtime.Player
 {
     [RequireComponent(typeof(PlayerSleepPresenter))]
     public class SteeringInterferencePresenter : MonoBehaviour

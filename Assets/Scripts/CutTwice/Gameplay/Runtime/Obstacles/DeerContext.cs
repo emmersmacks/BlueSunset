@@ -1,6 +1,7 @@
 ﻿using CutTwice.Core.Lifecycle;
+using CutTwice.Gameplay.Runtime.Obstacles.Components;
 
-namespace CutTwice.Controllers
+namespace CutTwice.Gameplay.Runtime.Obstacles
 {
     public class DeerContext : Context
     {

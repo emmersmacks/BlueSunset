@@ -1,4 +1,5 @@
-﻿using CutTwice.UI.Common.UIBackButton;
+﻿using CutTwice.Core.RivletUI;
+using CutTwice.UI.Common.UIBackButton;
 using UnityEngine;
 
 namespace CutTwice.UI.MainMenu.Leaderboard

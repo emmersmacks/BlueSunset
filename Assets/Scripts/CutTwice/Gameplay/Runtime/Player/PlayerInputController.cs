@@ -1,8 +1,8 @@
-﻿using CutTwice.Common;
+﻿using CutTwice.Core.Lifecycle;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace CutTwice.Controllers
+namespace CutTwice.Gameplay.Runtime.Player
 {
     public class PlayerInputController : ITickable
     {

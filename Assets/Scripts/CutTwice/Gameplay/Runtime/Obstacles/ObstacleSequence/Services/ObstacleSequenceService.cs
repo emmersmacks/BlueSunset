@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using CutTwice.ObstacleSequence.ModuleLoader;
-using CutTwice.ObstacleSequence.ModuleLoader.Dto;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.ModuleLoader;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.ModuleLoader.Dto;
 using Cysharp.Threading.Tasks;
 
-namespace CutTwice.ObstacleSequence.Services
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Services
 {
     public class ObstacleSequenceService : IObstacleSequenceService
     {

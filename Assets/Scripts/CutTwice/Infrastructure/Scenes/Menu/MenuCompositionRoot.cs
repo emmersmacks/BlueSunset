@@ -1,6 +1,6 @@
-﻿using CutTwice.Common.Infrastructure;
+﻿using CutTwice.Core.Initialization;
+using CutTwice.Core.Lifecycle;
 using CutTwice.Core.RivletUI;
-using CutTwice.Game;
 using CutTwice.UI.Common.UIBackButton;
 using CutTwice.UI.MainMenu.Credits;
 using CutTwice.UI.MainMenu.Leaderboard;
@@ -8,7 +8,7 @@ using CutTwice.UI.MainMenu.Menu;
 using CutTwice.UI.MainMenu.Menu.StartGameButton;
 using CutTwice.UI.MainMenu.Shop;
 
-namespace CutTwice.Menu
+namespace CutTwice.Infrastructure.Scenes.Menu
 {
     public class MenuCompositionRoot : CompositionRoot
     {

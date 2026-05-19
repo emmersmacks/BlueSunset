@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
 
-namespace CutTwice.ObstacleSequence.ModuleLoader.Dto
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.ModuleLoader.Dto
 {
     [Serializable]
     public struct SequenceModuleDto

@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 
-namespace CutTwice.GameStates
+namespace CutTwice.Core.GameStates
 {
     public interface IGameState
     {

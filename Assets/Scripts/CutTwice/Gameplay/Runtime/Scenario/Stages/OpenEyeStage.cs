@@ -1,12 +1,10 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 
-namespace CutTwice.Scenario.Act1
+namespace CutTwice.Gameplay.Runtime.Scenario.Stages
 {
     public class OpenEyeStage : ScenarioStage
     {

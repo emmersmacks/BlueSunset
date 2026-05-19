@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using CutTwice.Core.RivletUI;
 using UnityEngine;
 
-namespace CutTwice.UI
+namespace CutTwice.Core.RivletUI
 {
     public class WindowBase : IWindow
     {

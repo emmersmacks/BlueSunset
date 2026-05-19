@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using CutTwice.Common;
+using CutTwice.Core.Addressables;
 using CutTwice.Core.Lifecycle;
 using Cysharp.Threading.Tasks;
 using UnityEngine;

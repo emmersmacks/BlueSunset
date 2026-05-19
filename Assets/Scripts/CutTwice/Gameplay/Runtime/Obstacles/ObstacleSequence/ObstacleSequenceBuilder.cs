@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using CutTwice.Controllers;
-using CutTwice.Core.Factory;
-using CutTwice.Game;
-using CutTwice.Infrastructure.Factories;
-using CutTwice.ObstacleSequence.Actions;
-using CutTwice.ObstacleSequence.ModuleLoader.Dto;
-using CutTwice.ObstacleSequence.Services;
+using CutTwice.Core.Lifecycle;
+using CutTwice.Gameplay.Factories;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Actions;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.ModuleLoader.Dto;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Services;
+using CutTwice.Gameplay.Runtime.Road;
 using Cysharp.Threading.Tasks;
 
-namespace CutTwice.ObstacleSequence
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence
 {
     public class ObstacleSequenceBuilder
     {

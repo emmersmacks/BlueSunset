@@ -1,4 +1,4 @@
-﻿namespace CutTwice.Common
+﻿namespace CutTwice.Core.Lifecycle
 {
     public interface IFixedTickable
     {

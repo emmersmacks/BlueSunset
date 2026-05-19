@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Threading;
-using CutTwice.Game;
-using CutTwice.Infrastructure.Factories;
-using CutTwice.ObstacleSequence.Serialization;
-using CutTwice.ObstacleSequence.Serialization.SimpleTypes;
+using CutTwice.Core.Lifecycle;
+using CutTwice.Gameplay.Factories;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Serialization;
+using CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Serialization.SimpleTypes;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Object = UnityEngine.Object;
 
-namespace CutTwice.ObstacleSequence.Actions
+namespace CutTwice.Gameplay.Runtime.Obstacles.ObstacleSequence.Actions
 {
     public class SpawnTrafficAction : ISequenceActionRuntime, IDisposable
     {

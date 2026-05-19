@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading;
-using CutTwice.Common;
-using CutTwice.Controllers;
+using CutTwice.Core.Lifecycle;
+using CutTwice.Gameplay.Runtime.Player;
 using Cysharp.Threading.Tasks;
 
-namespace CutTwice.Scenario
+namespace CutTwice.Gameplay.Runtime.Scenario
 {
     public class ScenarioManager : ITickable, IInitializable
     {

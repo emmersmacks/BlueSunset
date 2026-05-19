@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using CutTwice.Game;
+﻿using CutTwice.Core.Lifecycle;
 
-namespace CutTwice.Common.Infrastructure
+namespace CutTwice.Core.Initialization
 {
     public abstract class CompositionRoot
     {
