@@ -2,10 +2,9 @@
 using CutTwice.Core.GameStates;
 using CutTwice.Core.Lifecycle;
 using CutTwice.Core.RivletUI;
-using CutTwice.Infrastructure.Scenes.Game.States;
+using CutTwice.Infrastructure.Scenes.Game.GlobalStates;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace CutTwice.UI.Game.GameOver.RestartButton
 {
@@ -26,7 +25,7 @@ namespace CutTwice.UI.Game.GameOver.RestartButton
 
         private void RestartGame()
         {
-            GameStateMachine.Instance.SetStateAsync<StartGameState>(_cancellationToken).Forget(Debug.LogException);
+            GlobalStateMachine.Instance.SetStateAsync<GameState>(_cancellationToken).Forget(Debug.LogException);
         }
     }
 }

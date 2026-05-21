@@ -15,11 +15,5 @@ namespace CutTwice.Infrastructure.Scenes.Menu
         {
             return new MenuCompositionRoot(SceneReferences);
         }
-
-        protected override UniTask InitAsync(CancellationToken ct)
-        {
-            EventBus.Publish(new OpenWindowRequest<MenuWindow>());
-            return UniTask.CompletedTask;
-        }
     }
 }

@@ -15,11 +15,5 @@ namespace CutTwice.Infrastructure.Scenes.Game
         {
             return new GameCompositionRoot(SceneReferences);
         }
-
-        protected override UniTask InitAsync(CancellationToken ct)
-        {
-            EventBus.Publish(new OpenWindowRequest<GameHUDWindow>());
-            return UniTask.CompletedTask;
-        }
     }
 }

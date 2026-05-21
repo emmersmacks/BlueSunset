@@ -3,17 +3,21 @@ using Cysharp.Threading.Tasks;
 
 namespace CutTwice.Core.GameStates
 {
-    public interface IGameState
+    public interface IState
     {
-        /// <summary>
-        /// Called when the state becomes active
-        /// </summary>
-        UniTask Enter(CancellationToken ct);
+        UniTask Enter(IStateMachine stateMachine, CancellationToken ct);
 
-        /// <summary>
-        /// Called when the state is exited
-        /// </summary>
         void Exit();
+    }
+    
+    public interface IGameState : IState
+    {
+        
+    }
+
+	public interface IGlobalState : IState
+    {
+        
     }
 }
 

@@ -20,7 +20,7 @@ namespace CutTwice.Infrastructure.Scenes.App
 
             if (SceneManager.GetActiveScene().buildIndex == 0)
             {
-                await GameStateMachine.Instance.SetStateAsync<MainMenuState>(destroyCancellationToken);
+                await GlobalStateMachine.Instance.SetStateAsync<MainMenuState>(destroyCancellationToken);
             }
         }
     }

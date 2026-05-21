@@ -4,9 +4,9 @@ using Cysharp.Threading.Tasks;
 
 namespace CutTwice.Infrastructure.Scenes.Game.States
 {
-    public class GameplayState : IGameState
+    public class GameLoopState : IGameState
     {
-        public UniTask Enter(CancellationToken ct)
+        public UniTask Enter(IStateMachine stateMachine, CancellationToken ct)
         {
             return UniTask.CompletedTask;
         }

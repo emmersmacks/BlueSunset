@@ -10,9 +10,16 @@ namespace CutTwice.Infrastructure.Scenes.Game.States
 {
     public class EndGameState : IGameState
     {
-        public async UniTask Enter(CancellationToken ct)
+        private readonly CutTwice.Core.EventBus.IEventBus _eventBus;
+
+        public EndGameState(CutTwice.Core.EventBus.IEventBus eventBus)
         {
-            EventBus.Publish(new OpenWindowRequest<GameOverWindow>());
+            _eventBus = eventBus;
+        }
+
+        public async UniTask Enter(IStateMachine stateMachine, CancellationToken ct)
+        {
+            _eventBus.Publish(new OpenWindowRequest<GameOverWindow>());
             // TODO: Move To Service
             //YG2.onGetLeaderboard += OnGetLeaderboard;
             //YG2.GetLeaderboard("time");

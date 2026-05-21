@@ -15,6 +15,12 @@ namespace CutTwice.Gameplay.Factories
     }
     
     public class TrafficFactory : GameObjectFactory  {
+        private readonly CutTwice.Core.EventBus.IEventBus _eventBus;
+
+        public TrafficFactory(CutTwice.Core.EventBus.IEventBus eventBus)
+        {
+            _eventBus = eventBus;
+        }
         protected override string PrefabKey => "Obstacles/Traffic";
 
         public override UniTask<Context> Create(Vector3 position, Quaternion rotation, Transform parent = null)
@@ -27,7 +33,7 @@ namespace CutTwice.Gameplay.Factories
             trafficContext.ObjectMoverController = new ObjectMoverController(objectMoverPresenter);
             
             var raycastStripPresenter = trafficContext.GameObject.GetComponent<RaycastStripPresenter>();
-            trafficContext.RaycastStripController = new RaycastStripController(raycastStripPresenter);
+            trafficContext.RaycastStripController = new RaycastStripController(raycastStripPresenter, _eventBus);
             
             return UniTask.FromResult((Context)trafficContext);
         }

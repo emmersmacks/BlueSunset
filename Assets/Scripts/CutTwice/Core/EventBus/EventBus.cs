@@ -3,24 +3,25 @@ using System.Collections.Generic;
 
 namespace CutTwice.Core.EventBus
 {
-    /// <summary>
-    /// Simple thread-safe static EventBus for publishing and subscribing to typed events.
-    /// This implementation is independent from the main game code and has no external dependencies.
-    /// 
-    /// Usage:
-    /// EventBus.Subscribe&lt;PlayerDiedEvent&gt;(OnPlayerDied);
-    /// EventBus.Publish(new PlayerDiedEvent { PlayerId = 5 });
-    /// EventBus.Unsubscribe&lt;PlayerDiedEvent&gt;(OnPlayerDied);
-    /// </summary>
-    public static class EventBus
+    public interface IEventBus
     {
-        private static readonly Dictionary<Type, List<Delegate>> _subscribers = new Dictionary<Type, List<Delegate>>();
-        private static readonly object _lock = new object();
+        void Subscribe<T>(Action<T> handler);
+        void Unsubscribe<T>(Action<T> handler);
+        void Publish<T>(T evt);
+        void ClearAll();
+        bool HasSubscribers<T>();
+    }
 
-        /// <summary>
-        /// Subscribe to events of type T.
-        /// </summary>
-        public static void Subscribe<T>(Action<T> handler)
+    /// <summary>
+    /// Instance-based, thread-safe EventBus. Register one instance in your CompositionRoot
+    /// and inject `IEventBus` into consumers.
+    /// </summary>
+    public class EventBus : IEventBus
+    {
+        private readonly Dictionary<Type, List<Delegate>> _subscribers = new Dictionary<Type, List<Delegate>>();
+        private readonly object _lock = new object();
+
+        public void Subscribe<T>(Action<T> handler)
         {
             if (handler == null) throw new ArgumentNullException(nameof(handler));
 
@@ -33,16 +34,12 @@ namespace CutTwice.Core.EventBus
                     _subscribers[type] = list;
                 }
 
-                // prevent double subscription of the same delegate instance
                 if (!list.Contains(handler))
                     list.Add(handler);
             }
         }
 
-        /// <summary>
-        /// Unsubscribe from events of type T.
-        /// </summary>
-        public static void Unsubscribe<T>(Action<T> handler)
+        public void Unsubscribe<T>(Action<T> handler)
         {
             if (handler == null) throw new ArgumentNullException(nameof(handler));
 
@@ -57,19 +54,13 @@ namespace CutTwice.Core.EventBus
             }
         }
 
-        /// <summary>
-        /// Publish an event to all subscribers of type T.
-        /// Exceptions thrown by individual handlers are caught and re-thrown as an AggregateException
-        /// after other handlers were invoked.
-        /// </summary>
-        public static void Publish<T>(T evt)
+        public void Publish<T>(T evt)
         {
             List<Delegate> handlersCopy = null;
             lock (_lock)
             {
                 if (_subscribers.TryGetValue(typeof(T), out var list))
                 {
-                    // shallow copy to allow handlers to unsubscribe during invocation
                     handlersCopy = new List<Delegate>(list);
                 }
             }
@@ -95,10 +86,7 @@ namespace CutTwice.Core.EventBus
                 throw new AggregateException("One or more EventBus handlers threw exceptions.", exceptions);
         }
 
-        /// <summary>
-        /// Clears all subscriptions. Useful for tests or scene reload cleanup.
-        /// </summary>
-        public static void ClearAll()
+        public void ClearAll()
         {
             lock (_lock)
             {
@@ -106,10 +94,7 @@ namespace CutTwice.Core.EventBus
             }
         }
 
-        /// <summary>
-        /// Returns whether there are subscribers for event type T.
-        /// </summary>
-        public static bool HasSubscribers<T>()
+        public bool HasSubscribers<T>()
         {
             lock (_lock)
             {

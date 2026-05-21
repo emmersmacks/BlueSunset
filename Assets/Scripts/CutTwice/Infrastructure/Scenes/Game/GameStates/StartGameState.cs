@@ -1,6 +1,10 @@
 ﻿using System.Threading;
+using CutTwice.Core.EventBus;
 using CutTwice.Core.GameStates;
+using CutTwice.Core.RivletUI;
 using CutTwice.Core.StaticNames;
+using CutTwice.Infrastructure.Scenes.Game.GlobalStates;
+using CutTwice.UI.Game.GameHUD;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,16 +13,23 @@ namespace CutTwice.Infrastructure.Scenes.Game.States
 {
     public class StartGameState : IGameState
     {
-        public async UniTask Enter(CancellationToken ct)
+        private readonly EventBus _eventBus;
+
+        public StartGameState(EventBus eventBus)
         {
-            SceneManager.LoadScene(SceneNames.Game);
-            
+            _eventBus = eventBus;
+        }
+
+        public async UniTask Enter(IStateMachine stateMachine, CancellationToken ct)
+        {
             Time.timeScale = 1f;
-            
+
             // TODO: Move To Audio System
             //Mixer.TransitionToSnapshots(new []{ Normal, Crash, Menu }, new []{ 0f, 0f, 1f }, 0);
 
-            await GameStateMachine.Instance.SetStateAsync<GameplayState>(ct);
+            _eventBus.Publish(new OpenWindowRequest<GameHUDWindow>());
+
+            await stateMachine.SetStateAsync<GameLoopState>(ct);
         }
 
         public void Exit()

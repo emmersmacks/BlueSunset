@@ -1,4 +1,6 @@
-﻿using CutTwice.Core.Initialization;
+﻿using System.Collections.Generic;
+using CutTwice.Core.GameStates;
+using CutTwice.Core.Initialization;
 using CutTwice.Core.Lifecycle;
 using CutTwice.Core.RivletUI;
 using CutTwice.Gameplay.Factories;
@@ -9,6 +11,8 @@ using CutTwice.Gameplay.Runtime.Player;
 using CutTwice.Gameplay.Runtime.Road;
 using CutTwice.Gameplay.Runtime.Scenario;
 using CutTwice.Gameplay.Runtime.Scenario.Stages;
+using CutTwice.Infrastructure.Scenes.Game.Initializers;
+using CutTwice.Infrastructure.Scenes.Game.States;
 using CutTwice.UI.Game.GameHUD;
 using CutTwice.UI.Game.GameHUD.SleepBar;
 using CutTwice.UI.Game.GameHUD.TimePanel;
@@ -29,6 +33,9 @@ namespace CutTwice.Infrastructure.Scenes.Game
 
         public override void Compose(RuntimeLifecycleManager lifecycleManager)
         {
+            // Event bus (scene-local)
+            var eventBus = lifecycleManager.Register(new Core.EventBus.EventBus());
+
             // Player
             var playerCarPresenter = _gameSceneReferences.Player.GetComponent<PlayerCarPresenter>();
             var playerCarController = lifecycleManager.Register(new PlayerCarController(playerCarPresenter));
@@ -48,8 +55,8 @@ namespace CutTwice.Infrastructure.Scenes.Game
             var infiniteRoadController = lifecycleManager.Register(new InfiniteRoadController(_gameSceneReferences.InfiniteRoadPresenter));
             
             // Obstacles
-            var trafficFactory = lifecycleManager.Register(new TrafficFactory());
-            var deerFactory = lifecycleManager.Register(new DeerFactory());
+            var trafficFactory = lifecycleManager.Register(new TrafficFactory(eventBus));
+            var deerFactory = lifecycleManager.Register(new DeerFactory(eventBus));
             
             var addressablesModuleLoader = lifecycleManager.Register(new AddressablesModuleLoader());
             var obstacleSequenceService = lifecycleManager.Register(new ObstacleSequenceService(addressablesModuleLoader));
@@ -57,7 +64,21 @@ namespace CutTwice.Infrastructure.Scenes.Game
             var obstacleRuntimeController = lifecycleManager.Register(new ObstacleRuntimeController());
             
             // Game
-            var gameSession = lifecycleManager.Register(new GameSession(obstacleSequenceService, obstacleSequenceBuilder, obstacleRuntimeController));
+
+            var endGameState = lifecycleManager.Register(new EndGameState(eventBus));
+            var gameplayState = lifecycleManager.Register(new GameLoopState());
+            var pauseState = lifecycleManager.Register(new PauseGameState());
+            var startGameState = lifecycleManager.Register(new StartGameState(eventBus));
+
+            var gameStateMachine = lifecycleManager.Register(new GameStateMachine(new List<IGameState>()
+            {
+                endGameState,
+                gameplayState,
+                pauseState,
+                startGameState
+            }));
+            
+            var gameSession = lifecycleManager.Register(new GameSession(obstacleSequenceService, obstacleSequenceBuilder, obstacleRuntimeController, eventBus, gameStateMachine));
             
             // UI
             var timePanelController = lifecycleManager.Register(new TimePanelController(_gameSceneReferences.GameHUDView.TimePanelView, gameSession));
@@ -69,9 +90,12 @@ namespace CutTwice.Infrastructure.Scenes.Game
             var gameOverWindow = lifecycleManager.Register(new GameOverWindow(_gameSceneReferences.GameOverView.gameObject, exitMenuButtonController, restartButtonController));
 
             
-            var uiManager = lifecycleManager.Register(new UIManager());
+            var uiManager = lifecycleManager.Register(new UIManager(eventBus));
             uiManager.Register(gameHud);
             uiManager.Register(gameOverWindow);
+            
+            // Initialization
+            var initialization = new GameInitializer(gameStateMachine);
         }
     }
 }

@@ -18,12 +18,18 @@ namespace CutTwice.Core.RivletUI
         private readonly List<Type> _stack = new();
         
         private Action<PopWindowRequest> _globalPopHandler;
+        private readonly CutTwice.Core.EventBus.IEventBus _eventBus;
+
+        public UIManager(CutTwice.Core.EventBus.IEventBus eventBus)
+        {
+            _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
+        }
 
         public UniTask InitAsync(CancellationToken ct)
         {
             // subscribe to global pop request (untyped)
             _globalPopHandler = _ => Pop();
-            EventBus.EventBus.Subscribe(_globalPopHandler);
+            _eventBus.Subscribe(_globalPopHandler);
             return UniTask.CompletedTask;
         }
 
@@ -39,20 +45,20 @@ namespace CutTwice.Core.RivletUI
             Action<PushWindowRequest<TWindow>> pushHandler = req => Push<TWindow>(req?.Payload);
             Action<PopToWindowRequest<TWindow>> popToHandler = _ => PopTo<TWindow>();
 
-            EventBus.EventBus.Subscribe(openHandler);
-            EventBus.EventBus.Subscribe(closeHandler);
-            EventBus.EventBus.Subscribe(pushHandler);
-            EventBus.EventBus.Subscribe(popToHandler);
+            _eventBus.Subscribe(openHandler);
+            _eventBus.Subscribe(closeHandler);
+            _eventBus.Subscribe(pushHandler);
+            _eventBus.Subscribe(popToHandler);
 
             _registry[key] = new RegisteredWindow
             {
                 Window = window,
                 Unsubscribe = () =>
                 {
-                    EventBus.EventBus.Unsubscribe(openHandler);
-                    EventBus.EventBus.Unsubscribe(closeHandler);
-                    EventBus.EventBus.Unsubscribe(pushHandler);
-                    EventBus.EventBus.Unsubscribe(popToHandler);
+                    _eventBus.Unsubscribe(openHandler);
+                    _eventBus.Unsubscribe(closeHandler);
+                    _eventBus.Unsubscribe(pushHandler);
+                    _eventBus.Unsubscribe(popToHandler);
                 }
             };
         }
@@ -164,7 +170,7 @@ namespace CutTwice.Core.RivletUI
             
             _registry.Clear();
             if (_globalPopHandler != null)
-                EventBus.EventBus.Unsubscribe(_globalPopHandler);
+                _eventBus.Unsubscribe(_globalPopHandler);
         }
 
         private class RegisteredWindow

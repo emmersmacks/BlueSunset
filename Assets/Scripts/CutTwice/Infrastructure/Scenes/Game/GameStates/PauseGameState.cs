@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace CutTwice.Infrastructure.Scenes.Game.States
 {
-    public class PauseState : IGameState
+    public class PauseGameState : IGameState
     {
-        public UniTask Enter(CancellationToken ct)
+        public UniTask Enter(IStateMachine stateMachine, CancellationToken ct)
         {
             Time.timeScale = 0f;
             return UniTask.CompletedTask;

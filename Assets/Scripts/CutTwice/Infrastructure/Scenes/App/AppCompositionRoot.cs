@@ -5,6 +5,7 @@ using CutTwice.Core.Lifecycle;
 using CutTwice.Core.RivletUI;
 using CutTwice.Infrastructure.Scenes.App.States;
 using CutTwice.Infrastructure.Scenes.Game;
+using CutTwice.Infrastructure.Scenes.Game.GlobalStates;
 using CutTwice.Infrastructure.Scenes.Game.States;
 using CutTwice.Infrastructure.Scenes.Menu.States;
 using CutTwice.Infrastructure.Services;
@@ -18,25 +19,22 @@ namespace CutTwice.Infrastructure.Scenes.App
             // Services
             var purchaseService = lifecycleManager.Register(new PurchaseService());
 
+            // Event bus
+            var eventBus = lifecycleManager.Register(new CutTwice.Core.EventBus.EventBus());
+
             // UI
-            var uiManager = lifecycleManager.Register(new UIManager());
+            var uiManager = lifecycleManager.Register(new UIManager(eventBus));
 
-            // GameStateMachine
+            // AppStateMachine
             var bootstrapState = lifecycleManager.Register(new BootstrapState());
-            var endGameState = lifecycleManager.Register(new EndGameState());
-            var gameplayState = lifecycleManager.Register(new GameplayState());
-            var mainMenuState = lifecycleManager.Register(new MainMenuState());
-            var pauseState = lifecycleManager.Register(new PauseState());
-            var startGameState = lifecycleManager.Register(new StartGameState());
+            var mainMenuState = lifecycleManager.Register(new MainMenuState(eventBus));
+            var gameState = lifecycleManager.Register(new GameState());
 
-            var stateMachine = lifecycleManager.Register(new GameStateMachine(new List<IGameState>()
+            var stateMachine = lifecycleManager.Register(new GlobalStateMachine(new List<IGlobalState>()
             {
                 bootstrapState,
-                endGameState,
-                gameplayState,
                 mainMenuState,
-                pauseState,
-                startGameState
+                gameState,
             }));
             
             // Player data

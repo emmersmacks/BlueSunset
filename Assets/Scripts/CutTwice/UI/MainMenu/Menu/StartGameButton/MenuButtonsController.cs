@@ -3,6 +3,7 @@ using CutTwice.Core.EventBus;
 using CutTwice.Core.GameStates;
 using CutTwice.Core.Lifecycle;
 using CutTwice.Core.RivletUI;
+using CutTwice.Infrastructure.Scenes.Game.GlobalStates;
 using CutTwice.Infrastructure.Scenes.Game.States;
 using CutTwice.UI.MainMenu.Credits;
 using CutTwice.UI.MainMenu.Leaderboard;
@@ -16,8 +17,11 @@ namespace CutTwice.UI.MainMenu.Menu.StartGameButton
     {
         private CancellationToken _cancellationToken;
 
-        public MenuButtonsController(MenuButtonsView view) : base(view)
+        private readonly IEventBus _eventBus;
+
+        public MenuButtonsController(MenuButtonsView view, IEventBus eventBus) : base(view)
         {
+            _eventBus = eventBus;
             View.StartButton.onClick.AddListener(StartGame);
             View.CreditsButton.onClick.AddListener(ShowCredits);
             View.ShopButton.onClick.AddListener(ShowShop);
@@ -32,22 +36,22 @@ namespace CutTwice.UI.MainMenu.Menu.StartGameButton
 
         private void StartGame()
         {
-            GameStateMachine.Instance.SetStateAsync<StartGameState>(_cancellationToken).Forget(Debug.LogException);
+            GlobalStateMachine.Instance.SetStateAsync<GameState>(_cancellationToken).Forget(Debug.LogException);
         }
 
         private void ShowCredits()
         {
-            EventBus.Publish(new PushWindowRequest<CreditsWindow>());
+            _eventBus.Publish(new PushWindowRequest<CreditsWindow>());
         }
         
         private void ShowShop()
         {
-            EventBus.Publish(new PushWindowRequest<ShopWindow>());
+            _eventBus.Publish(new PushWindowRequest<ShopWindow>());
         }
         
         private void ShowLeaderboard()
         {
-            EventBus.Publish(new PushWindowRequest<LeaderboardWindow>());
+            _eventBus.Publish(new PushWindowRequest<LeaderboardWindow>());
         }
     }
 }

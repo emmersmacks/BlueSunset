@@ -20,22 +20,31 @@ namespace CutTwice.Infrastructure.Scenes.Game
 
         public float SessionTime;
         
-        private bool _gameStarted = false;
+        private bool _gameStarted;
         private CancellationTokenSource _sessionCancellationTokenSource;
         private CancellationToken _destroyCancellationToken;
         
-        public GameSession(IObstacleSequenceService service, ObstacleSequenceBuilder builder, ObstacleRuntimeController runtime)
+        private readonly IEventBus _eventBus;
+        private readonly IStateMachine _gameStateMachine;
+
+        public GameSession(IObstacleSequenceService service, 
+            ObstacleSequenceBuilder builder, 
+            ObstacleRuntimeController runtime, 
+            IEventBus eventBus,
+            IStateMachine gameStateMachine)
         {
             _service = service;
             _builder = builder;
             _runtime = runtime;
+            _eventBus = eventBus;
+            _gameStateMachine = gameStateMachine;
         }
 
         public UniTask InitAsync(CancellationToken ct)
         {
             _destroyCancellationToken = ct;
             _sessionCancellationTokenSource = new CancellationTokenSource();
-            EventBus.Subscribe<GameOverEvent>(OnGameOverRequested);
+            _eventBus.Subscribe<GameOverEvent>(OnGameOverRequested);
             StartSequenceAsync(new SequenceModulePreviewDto { Name = "DefaultSequenceModule" }, true, true, _sessionCancellationTokenSource.Token).Forget(Debug.LogException);
             return UniTask.CompletedTask;
         }
@@ -78,12 +87,12 @@ namespace CutTwice.Infrastructure.Scenes.Game
             _sessionCancellationTokenSource.Dispose();
             _sessionCancellationTokenSource = null;
             
-            GameStateMachine.Instance.SetStateAsync<EndGameState>(_destroyCancellationToken).Forget(Debug.LogException);
+            _gameStateMachine.SetStateAsync<EndGameState>(_destroyCancellationToken).Forget(Debug.LogException);
         }
 
         public void Dispose()
         {
-            EventBus.Unsubscribe<GameOverEvent>(OnGameOverRequested);
+            _eventBus.Unsubscribe<GameOverEvent>(OnGameOverRequested);
 
             if (_sessionCancellationTokenSource != null)
             {
