@@ -20,14 +20,14 @@ namespace CutTwice.Infrastructure.Scenes.App
             var purchaseService = lifecycleManager.Register(new PurchaseService());
 
             // Event bus
-            var eventBus = lifecycleManager.Register(new CutTwice.Core.EventBus.EventBus());
+            var eventBus = lifecycleManager.Register(new Core.EventBus.EventBus());
 
             // UI
             var uiManager = lifecycleManager.Register(new UIManager(eventBus));
 
             // AppStateMachine
             var bootstrapState = lifecycleManager.Register(new BootstrapState());
-            var mainMenuState = lifecycleManager.Register(new MainMenuState(eventBus));
+            var mainMenuState = lifecycleManager.Register(new MainMenuState());
             var gameState = lifecycleManager.Register(new GameState());
 
             var stateMachine = lifecycleManager.Register(new GlobalStateMachine(new List<IGlobalState>()
