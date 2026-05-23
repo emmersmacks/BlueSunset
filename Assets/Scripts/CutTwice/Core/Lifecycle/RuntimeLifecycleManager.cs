@@ -34,22 +34,22 @@ namespace CutTwice.Core.Lifecycle
 
         public T Register<T>(T obj)
         {
-            if (obj is IInitializable initializable)
+            if (obj is IInitializable initializable && !_initializableList.Contains(initializable))
             {
                 _initializableList.Add(initializable);
             }
             
-            if (obj is ITickable tickable)
+            if (obj is ITickable tickable && !_tickableList.Contains(tickable))
             {
                 _tickableList.Add(tickable);
             }
             
-            if (obj is IFixedTickable fixedTickable)
+            if (obj is IFixedTickable fixedTickable && !_fixedTickableList.Contains(fixedTickable))
             {
                 _fixedTickableList.Add(fixedTickable);
             }
             
-            if (obj is IDisposable disposable)
+            if (obj is IDisposable disposable && !_disposableList.Contains(disposable))
             {
                 _disposableList.Add(disposable);
             }
