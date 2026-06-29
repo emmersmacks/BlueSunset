@@ -17,10 +17,12 @@ namespace CutTwice.UI.MainMenu.Menu.StartGameButton
         private CancellationToken _cancellationToken;
 
         private readonly IEventBus _eventBus;
+        private readonly GlobalStateMachine _globalStateMachine;
 
-        public MenuButtonsController(MenuButtonsView view, IEventBus eventBus) : base(view)
+        public MenuButtonsController(MenuButtonsView view, IEventBus eventBus, GlobalStateMachine globalStateMachine) : base(view)
         {
             _eventBus = eventBus;
+            _globalStateMachine = globalStateMachine;
             View.StartButton.onClick.AddListener(StartGame);
             View.CreditsButton.onClick.AddListener(ShowCredits);
             View.ShopButton.onClick.AddListener(ShowShop);
@@ -35,7 +37,7 @@ namespace CutTwice.UI.MainMenu.Menu.StartGameButton
 
         private void StartGame()
         {
-            GlobalStateMachine.Instance.SetStateAsync<GameState>(_cancellationToken).Forget(Debug.LogException);
+            _globalStateMachine.SetStateAsync<GameState>(_cancellationToken).Forget(Debug.LogException);
         }
 
         private void ShowCredits()

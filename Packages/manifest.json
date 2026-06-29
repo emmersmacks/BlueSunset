@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.cascade.di": "https://github.com/emmersmacks/CascadeDI.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.addressables": "2.7.6",
     "com.unity.ai.navigation": "2.0.9",

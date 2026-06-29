@@ -7,15 +7,7 @@ using UnityEngine;
 namespace CutTwice.Gameplay.Runtime.Hazards.Components
 {
     [RequireComponent(typeof(MeshRenderer))]
-    public class ReflectionObjectPresenter : MonoBehaviour, IInitializable
+    public class ReflectionObjectPresenter : MonoBehaviour
     {
-        [NonSerialized]
-        public Material Material;
-        
-        public UniTask InitAsync(CancellationToken ct)
-        {
-            Material = GetComponent<MeshRenderer>().material;
-            return UniTask.CompletedTask;
-        }
     }
 }

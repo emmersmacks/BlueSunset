@@ -1,27 +1,39 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using CutTwice.Core.Lifecycle;
+using CutTwice.Core.Factory;
+using Cysharp.Threading.Tasks;
+using CascadeDI.Builder;
 
 namespace CutTwice.Core.RivletUI
 {
-    public class WindowBase : IWindow
+    public abstract class WindowBase<TView> : IWindow, IInitializable, IDisposable where TView : WindowViewBase
     {
-        private readonly GameObject _windowObject;
+        protected readonly TView _windowView;
         protected List<IWindowController> Controllers = new();
+        private readonly IWindowFactory _windowFactory;
+        private IWindowInstance _windowInstance;
         
-        public WindowBase(GameObject windowObject)
+        public WindowBase(TView windowView, IWindowFactory windowFactory)
         {
-            _windowObject = windowObject;
-            _windowObject.SetActive(false);
+            _windowView = windowView;
+            _windowFactory = windowFactory;
         }
-        
-        protected void Register(IWindowController controller)
+
+        public async UniTask InitAsync(CancellationToken ct)
         {
-            Controllers.Add(controller);
+            _windowView.gameObject.SetActive(false);
+
+            _windowInstance = await _windowFactory.CreateAsync(GetType().Name, Compose, ct);
+            Controllers = _windowInstance.Controllers;
         }
-        
+
+        public abstract void Compose(IContainerBuilder builder);
+
         public void Show(object payload = null)
         {
-            _windowObject.SetActive(true);
+            _windowView.gameObject.SetActive(true);
             foreach (var controller in Controllers)
             {
                 controller.Show(payload);
@@ -34,7 +46,12 @@ namespace CutTwice.Core.RivletUI
             {
                 controller.Hide();
             }
-            _windowObject.SetActive(false);
+            _windowView.gameObject.SetActive(false);
+        }
+
+        public void Dispose()
+        {
+            _windowInstance?.Release();
         }
     }
 }

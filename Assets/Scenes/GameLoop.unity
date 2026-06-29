@@ -3033,15 +3033,18 @@ MonoBehaviour:
     Player: {fileID: 7362608118278196462}
     PlayerInitialPosition: {fileID: 1003828617}
     InfiniteRoadPresenter: {fileID: 379529047}
-    RotateBackviewMirrorPresenter: {fileID: 1046061882}
-    RotateSideviewMirrorPresenter: {fileID: 1608929654}
+    RotateBackviewMirrorPresenter: {fileID: 1046061884}
+    RotateSideviewMirrorPresenter: {fileID: 1608929657}
     BackviewReflectionObjectPresenter: {fileID: 1672228061}
     SideviewReflectionObjectPresenter: {fileID: 153920267}
     SideviewMirrorHazardPresenter: {fileID: 1608929656}
     BackviewMirrorHazardPresenter: {fileID: 1046061883}
     LeftSideHazardLoopSoundPresenter: {fileID: 322034133}
-    GameHUDView: {fileID: 423763976}
-    GameOverView: {fileID: 1052872796}
+    gameHUDWindowView: {fileID: 423763976}
+    gameOverWindowView: {fileID: 1052872796}
+    ScenarioManagerSettings:
+      InitialStageIndex: 0
+    PlayerCamera: {fileID: 330585545}
 --- !u!1 &1003828616
 GameObject:
   m_ObjectHideFlags: 0
@@ -3209,9 +3212,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1046061880}
-  - component: {fileID: 1046061882}
   - component: {fileID: 1046061881}
   - component: {fileID: 1046061883}
+  - component: {fileID: 1046061884}
   m_Layer: 3
   m_Name: UpsideMirror
   m_TagString: Untagged
@@ -3259,20 +3262,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.07
   m_Center: {x: -0.13, y: 0.67, z: -0.14}
---- !u!114 &1046061882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1046061879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc6cf340e31148d7be153520331071d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CutTwice.Infrastructure.Scenes.Game.Runtime.Interactables.RotateMirrorPresenter
-  MirrorTransform: {fileID: 1401642348}
-  Pressedrotation: {x: 0, y: 30, z: 0}
 --- !u!114 &1046061883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3286,6 +3275,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CutTwice.Gameplay.Runtime.Hazards.Components.BackviewMirrorHazardPresenter
   AudioSource: {fileID: 309676616}
+--- !u!114 &1046061884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046061879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 766d66abb7c04ad191e1630cbfa68374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CutTwice.Gameplay.Runtime.Interactables.Components.RotateMirrorPresenter
+  MirrorTransform: {fileID: 1401642348}
+  Pressedrotation: {x: 0, y: 30, z: 0}
 --- !u!1 &1052872791 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1555916827205418908, guid: 1c9a14a4257293342922fbd16d1b101a, type: 3}
@@ -4871,9 +4874,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1608929653}
-  - component: {fileID: 1608929654}
   - component: {fileID: 1608929655}
   - component: {fileID: 1608929656}
+  - component: {fileID: 1608929657}
   m_Layer: 3
   m_Name: LeftsideMirror
   m_TagString: Untagged
@@ -4899,20 +4902,6 @@ Transform:
   - {fileID: 322034131}
   m_Father: {fileID: 7362608118278196462}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1608929654
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1608929652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc6cf340e31148d7be153520331071d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CutTwice.Infrastructure.Scenes.Game.Runtime.Interactables.RotateMirrorPresenter
-  MirrorTransform: {fileID: 1937554950}
-  Pressedrotation: {x: 0, y: -30, z: 0}
 --- !u!135 &1608929655
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4949,6 +4938,20 @@ MonoBehaviour:
   LightMaterial: {fileID: 2100000, guid: cac2160afb0b3ff44b905148d49db43a, type: 2}
   Light: {fileID: 124162788}
   AudioSource: {fileID: 322034132}
+--- !u!114 &1608929657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608929652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 766d66abb7c04ad191e1630cbfa68374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CutTwice.Gameplay.Runtime.Interactables.Components.RotateMirrorPresenter
+  MirrorTransform: {fileID: 1937554950}
+  Pressedrotation: {x: 0, y: -30, z: 0}
 --- !u!1 &1648182773 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1686410672317682880, guid: 1c9a14a4257293342922fbd16d1b101a, type: 3}

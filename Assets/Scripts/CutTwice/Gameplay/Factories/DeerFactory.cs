@@ -12,12 +12,12 @@ namespace CutTwice.Gameplay.Factories
         public RaycastStripController RaycastStripController;
     }
     
-    public class DeerFactory : GameObjectFactory
+    public class DeerGameObjectFactory : GameObjectGameObjectFactory
     {
         protected override string PrefabKey => "Obstacles/Deer";
         private readonly CutTwice.Core.EventBus.IEventBus _eventBus;
 
-        public DeerFactory(CutTwice.Core.EventBus.IEventBus eventBus)
+        public DeerGameObjectFactory(CutTwice.Core.EventBus.IEventBus eventBus)
         {
             _eventBus = eventBus;
         }

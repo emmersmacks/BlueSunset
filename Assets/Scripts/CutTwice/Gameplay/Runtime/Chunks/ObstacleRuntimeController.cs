@@ -10,39 +10,16 @@ namespace CutTwice.Gameplay.Runtime.Chunks
 {
     public class ObstacleRuntimeController
     {
-        private ObstacleSequenceModuleRuntime _sequenceModuleRuntime;
-        private SequenceChunkRuntime[] _chunksOrder;
-        
-        private bool _randomize;
-        
-        public async Task Init(ObstacleSequenceModuleRuntime sequence, bool randomize, CancellationToken ct)
+        public async UniTask Run(ObstacleSequenceModuleRuntime sequence, bool randomize, CancellationToken ct)
         {
-            foreach (var chunks in sequence.Chunks)
-            {
-                foreach (var command in chunks.Actions)
-                {
-                    if (ct.IsCancellationRequested)
-                    {
-                        return;
-                    }
-                
-                    await command.Init(ct);
-                }
-            }
-            
-            _sequenceModuleRuntime = sequence;
-            _randomize = randomize;
-        }
-
-        public async UniTask Run(CancellationToken ct)
-        {
-            if (_randomize)
+            SequenceChunkRuntime[] chunksOrder = null;
+            if (randomize)
             {
                 var random = new Random();
-                _chunksOrder = _sequenceModuleRuntime.Chunks.Randomize(random).ToArray();
+                chunksOrder = sequence.Chunks.Randomize(random).ToArray();
             }
             
-            foreach (var chunk in _chunksOrder)
+            foreach (var chunk in chunksOrder)
             {
                 Debug.Log("[TEST] Start Chunk: " + chunk.Name);
                 
@@ -56,8 +33,6 @@ namespace CutTwice.Gameplay.Runtime.Chunks
                     await command.Run(ct);
                 }
             }
-
-            _chunksOrder = null;
         }
     }
 }

@@ -33,6 +33,22 @@ namespace CutTwice.Core.Lifecycle
             }
         }
 
+        public void Register(List<ILifecycleObject> lifecycleObjects)
+        {
+            foreach (var lifecycleObject in lifecycleObjects)
+            {
+                Register(lifecycleObject);
+            }
+        }
+        
+        public async UniTask RuntimeRegister(List<ILifecycleObject> lifecycleObjects, CancellationToken ct)
+        {
+            foreach (var lifecycleObject in lifecycleObjects)
+            {
+                await RuntimeRegister(lifecycleObject, ct);
+            }
+        }
+
         public T Register<T>(T obj)
         {
             if (obj is IInitializable initializable && !_initializableList.Contains(initializable))

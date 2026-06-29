@@ -14,10 +14,10 @@ namespace CutTwice.Gameplay.Factories
         public GameObject GameObject;
     }
     
-    public class TrafficFactory : GameObjectFactory  {
-        private readonly CutTwice.Core.EventBus.IEventBus _eventBus;
+    public class TrafficGameObjectFactory : GameObjectGameObjectFactory  {
+        private readonly Core.EventBus.IEventBus _eventBus;
 
-        public TrafficFactory(CutTwice.Core.EventBus.IEventBus eventBus)
+        public TrafficGameObjectFactory(Core.EventBus.IEventBus eventBus)
         {
             _eventBus = eventBus;
         }

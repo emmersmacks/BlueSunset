@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using CutTwice.Core.EventBus;
+using CutTwice.Core.Factory;
 using CutTwice.Core.GameStates;
 using CutTwice.Core.Initialization;
 using CutTwice.Core.Lifecycle;
@@ -7,6 +10,7 @@ using CutTwice.Gameplay.Factories;
 using CutTwice.Gameplay.GameStates;
 using CutTwice.Gameplay.Initializers;
 using CutTwice.Gameplay.Runtime.Chunks;
+using CutTwice.Gameplay.Runtime.Chunks.Actions;
 using CutTwice.Gameplay.Runtime.Chunks.ModuleLoader;
 using CutTwice.Gameplay.Runtime.Chunks.Services;
 using CutTwice.Gameplay.Runtime.Hazards.Components;
@@ -17,12 +21,8 @@ using CutTwice.Gameplay.Runtime.Scenario;
 using CutTwice.Gameplay.Runtime.Scenario.Stages;
 using CutTwice.Gameplay.Runtime.Sound.Components;
 using CutTwice.UI.Game.GameHUD;
-using CutTwice.UI.Game.GameHUD.SleepBar;
-using CutTwice.UI.Game.GameHUD.TimePanel;
 using CutTwice.UI.Game.GameOver;
-using CutTwice.UI.Game.GameOver.MenuExitButton;
-using CutTwice.UI.Game.GameOver.RestartButton;
-using UnityEngine;
+using CascadeDI.Builder;
 
 namespace CutTwice.Gameplay
 {
@@ -35,94 +35,99 @@ namespace CutTwice.Gameplay
             _gameSceneReferences = gameSceneReferences;
         }
 
-        public override void Compose(RuntimeLifecycleManager lifecycleManager)
+        public override void Compose(IContainerBuilder builder, RuntimeLifecycleManager lifecycleManager)
         {
-            // Event bus (scene-local)
-            var eventBus = lifecycleManager.Register(new Core.EventBus.EventBus());
+            builder.RegisterSingleton<RuntimeLifecycleManager>(lifecycleManager);
 
-            // Player
-            var playerInputController = lifecycleManager.Register(new PlayerInputController(Camera.main));
+            ComposeGameplayModule(builder, lifecycleManager);
+            ComposeUIModule(builder);
             
+            // Initialization
+            builder.RegisterSingleton<GameInitializer>();
+        }
+
+        private void ComposeGameplayModule(IContainerBuilder builder, RuntimeLifecycleManager lifecycleManager)
+        {
+            // Services
+            var eventBus = new EventBus();
+            builder.RegisterSingleton<IEventBus>(eventBus);
+            builder.RegisterSingleton<RuntimeLifecycleManager>(lifecycleManager);
+            
+            // Gameplay
+            var playerInputController = lifecycleManager.Register(new PlayerInputController(_gameSceneReferences.PlayerCamera));
+            builder.RegisterSingleton(typeof(PlayerInputController), playerInputController);
             var playerCarPresenter = _gameSceneReferences.Player.GetComponent<PlayerCarPresenter>();
             var playerCarController = lifecycleManager.Register(new PlayerCarController(playerCarPresenter, playerInputController));
-
             var playerSleepPresenter = _gameSceneReferences.Player.GetComponent<PlayerSleepPresenter>();
             var playerSleepController = lifecycleManager.Register(new PlayerSleepController(playerSleepPresenter));
-            
+            builder.RegisterSingleton<PlayerSleepController>(playerSleepController);
             var steeringInterferencePresenter = _gameSceneReferences.Player.GetComponent<SteeringInterferencePresenter>();
             var steeringInterferenceController = lifecycleManager.Register(new SteeringInterferenceController(steeringInterferencePresenter, playerSleepController));
             
-            // Scenario
-            var initialStage = lifecycleManager.Register(new InitialStage(_gameSceneReferences.Player, _gameSceneReferences.PlayerInitialPosition));
-            var openEyeStage = lifecycleManager.Register(new OpenEyeStage(_gameSceneReferences.PostProcessing));
-            var scenarioManager = lifecycleManager.Register(new ScenarioManager(0, playerInputController, new ScenarioStage[] { initialStage, openEyeStage }));
             var infiniteRoadController = lifecycleManager.Register(new InfiniteRoadController(_gameSceneReferences.InfiniteRoadPresenter));
+            builder.RegisterSingleton<InfiniteRoadController>(infiniteRoadController);
             
-            // Runtime
             var rotateBackviewMirrorController = lifecycleManager.Register(new RotateMirrorController(_gameSceneReferences.RotateBackviewMirrorPresenter, playerInputController));
-            lifecycleManager.Register(_gameSceneReferences.BackviewReflectionObjectPresenter);
             var backviewReflectionObjectController = lifecycleManager.Register(new ReflectionObjectController(_gameSceneReferences.BackviewReflectionObjectPresenter, rotateBackviewMirrorController));
-            
-            var backviewHazardPresenter = lifecycleManager.Register(_gameSceneReferences.BackviewMirrorHazardPresenter);
-            var backviewMirrorHazardController = lifecycleManager.Register(new BackviewMirrorHazardController(backviewHazardPresenter, backviewReflectionObjectController, rotateBackviewMirrorController, eventBus));
+            var backviewMirrorHazardController = lifecycleManager.Register(new BackviewMirrorHazardController(_gameSceneReferences.BackviewMirrorHazardPresenter, backviewReflectionObjectController, rotateBackviewMirrorController, eventBus));
+            builder.RegisterSingleton(typeof(BackviewMirrorHazardController), backviewMirrorHazardController);
             
             var rotateSideviewMirrorController = lifecycleManager.Register(new RotateMirrorController(_gameSceneReferences.RotateSideviewMirrorPresenter, playerInputController));
-            lifecycleManager.Register(_gameSceneReferences.SideviewReflectionObjectPresenter);
             var sideviewReflectionObjectController = lifecycleManager.Register(new ReflectionObjectController(_gameSceneReferences.SideviewReflectionObjectPresenter, rotateSideviewMirrorController));
-            
-            var sideviewMirrorHazardController = lifecycleManager.Register(new SideviewMirrorHazardController(_gameSceneReferences.SideviewMirrorHazardPresenter, sideviewReflectionObjectController, rotateSideviewMirrorController, eventBus));
+            var sideviewMirrorHazardController = lifecycleManager.Register(new SideviewMirrorHazardController(_gameSceneReferences.SideviewMirrorHazardPresenter, sideviewReflectionObjectController, rotateBackviewMirrorController, eventBus));
+            var sideviewHazardSoundLoopController = lifecycleManager.Register(new MusicLoopController(_gameSceneReferences.LeftSideHazardLoopSoundPresenter));
+            builder.RegisterSingleton(typeof(SideviewMirrorHazardController), sideviewMirrorHazardController);
 
-            var leftsideSoundLoopPresenter = lifecycleManager.Register(_gameSceneReferences.LeftSideHazardLoopSoundPresenter);
-            lifecycleManager.Register(new MusicLoopController(leftsideSoundLoopPresenter));
-            
-            // Obstacles
-            var trafficFactory = lifecycleManager.Register(new TrafficFactory(eventBus));
-            var deerFactory = lifecycleManager.Register(new DeerFactory(eventBus));
-            
-            var addressablesModuleLoader = lifecycleManager.Register(new AddressablesModuleLoader());
-            var obstacleSequenceService = lifecycleManager.Register(new ObstacleSequenceService(addressablesModuleLoader));
-            var obstacleSequenceBuilder = lifecycleManager.Register(new ObstacleSequenceBuilder(obstacleSequenceService,
-                infiniteRoadController,
-                trafficFactory,
-                deerFactory,
-                lifecycleManager, 
-                backviewMirrorHazardController,
-                sideviewMirrorHazardController));
-            var obstacleRuntimeController = lifecycleManager.Register(new ObstacleRuntimeController());
-            
-            // Game
 
-            var endGameState = lifecycleManager.Register(new EndGameState(eventBus));
-            var gameplayState = lifecycleManager.Register(new GameLoopState());
-            var pauseState = lifecycleManager.Register(new PauseGameState());
-            var startGameState = lifecycleManager.Register(new StartGameState(eventBus));
-
-            var gameStateMachine = lifecycleManager.Register(new GameStateMachine(new List<IGameState>()
+            // Game States
+            builder.RegisterSingletonWithLifetime<EndGameState>(new List<Type>{ typeof(IGameState) });
+            builder.RegisterSingletonWithLifetime<GameLoopState>(new List<Type>{ typeof(IGameState) });
+            builder.RegisterSingletonWithLifetime<PauseGameState>(new List<Type>{ typeof(IGameState) });
+            builder.RegisterSingletonWithLifetime<StartGameState>(new List<Type>{ typeof(IGameState) });
+            builder.RegisterSingletonWithLifetime<GameStateMachine>();
+            
+            // Orchestration
+            
+            // --- Scenario
+            var initialStage = lifecycleManager.Register(new InitialStage(_gameSceneReferences.Player, _gameSceneReferences.PlayerInitialPosition));
+            var openEyeStage = lifecycleManager.Register(new OpenEyeStage(_gameSceneReferences.PostProcessing));
+            var scenarioSystem = new ScenarioSystem(_gameSceneReferences.ScenarioManagerSettings, playerInputController, new ScenarioStage[]
             {
-                endGameState,
-                gameplayState,
-                pauseState,
-                startGameState
-            }));
-            
-            var gameSession = lifecycleManager.Register(new GameSession(obstacleSequenceService, obstacleSequenceBuilder, obstacleRuntimeController, eventBus, gameStateMachine));
-            
-            // UI
-            var timePanelController = lifecycleManager.Register(new TimePanelController(_gameSceneReferences.GameHUDView.TimePanelView, gameSession));
-            var sleepBarController = lifecycleManager.Register(new SleepBarController(_gameSceneReferences.GameHUDView.SleepBarView, playerSleepController));
-            var gameHud = lifecycleManager.Register(new GameHUDWindow(_gameSceneReferences.GameHUDView.gameObject, timePanelController, sleepBarController));
+                initialStage,
+                openEyeStage,
+            });
+            lifecycleManager.Register(scenarioSystem);
+            builder.RegisterSingleton<ScenarioSystem>(scenarioSystem);
 
-            var exitMenuButtonController = lifecycleManager.Register(new MenuExitButtonController(_gameSceneReferences.GameOverView.ExitMenuButtonView));
-            var restartButtonController = lifecycleManager.Register(new RestartButtonController(_gameSceneReferences.GameOverView.RestartButtonView));
-            var gameOverWindow = lifecycleManager.Register(new GameOverWindow(_gameSceneReferences.GameOverView.gameObject, exitMenuButtonController, restartButtonController));
+            // --- Obstacles
+            builder.RegisterTransientWithLifetime<ISequenceActionRuntime, DelayAction>(typeof(DelayAction));
+            builder.RegisterTransientWithLifetime<ISequenceActionRuntime, ShowBackViewMirrorObjectAction>(typeof(ShowBackViewMirrorObjectAction));
+            builder.RegisterTransientWithLifetime<ISequenceActionRuntime, ShowSideViewMirrorObjectAction>(typeof(ShowSideViewMirrorObjectAction));
+            builder.RegisterTransientWithLifetime<ISequenceActionRuntime, SpawnDeerAction>(typeof(SpawnDeerAction));
+            builder.RegisterTransientWithLifetime<ISequenceActionRuntime, SpawnTrafficAction>(typeof(SpawnTrafficAction));
+            
+            builder.RegisterSingleton<ActionFactory>();
+            builder.RegisterSingletonWithLifetime<TrafficGameObjectFactory>();
+            builder.RegisterSingletonWithLifetime<DeerGameObjectFactory>();
+            builder.RegisterSingletonWithLifetime<ISequenceModuleLoader, AddressablesModuleLoader>();
+            builder.RegisterSingletonWithLifetime<IObstacleSequenceService, ObstacleSequenceService>();
+            builder.RegisterSingletonWithLifetime<ObstacleSequenceBuilder>();
+            builder.RegisterSingletonWithLifetime<ObstacleRuntimeController>();
+            
+            // Session
+            builder.RegisterSingletonWithLifetime<GameSession>();
+        }
 
+        private void ComposeUIModule(IContainerBuilder builder)
+        {
+            builder.RegisterSingleton(typeof(GameHUDWindowView), _gameSceneReferences.gameHUDWindowView);
+            builder.RegisterSingletonWithLifetime<GameHUDWindow>(new List<Type>{ typeof(IWindow) });
             
-            var uiManager = lifecycleManager.Register(new UIManager(eventBus));
-            uiManager.Register(gameHud);
-            uiManager.Register(gameOverWindow);
-            
-            // Initialization
-            var initialization = new GameInitializer(gameStateMachine);
+            builder.RegisterSingleton(typeof(GameOverWindowView), _gameSceneReferences.gameOverWindowView);
+            builder.RegisterSingletonWithLifetime<GameOverWindow>(new List<Type>{ typeof(IWindow) });
+
+            builder.RegisterSingleton<IWindowFactory, WindowFactory>();
+            builder.RegisterSingletonWithLifetime<UIManager>();
         }
     }
 }

@@ -1,17 +1,26 @@
-﻿using CutTwice.Core.RivletUI;
+﻿using System;
+using System.Collections.Generic;
+using CutTwice.Core.Lifecycle;
+using CutTwice.Core.RivletUI;
 using CutTwice.UI.Game.GameOver.MenuExitButton;
 using CutTwice.UI.Game.GameOver.RestartButton;
-using UnityEngine;
+using CascadeDI.Builder;
+using CutTwice.Core.Factory;
 
 namespace CutTwice.UI.Game.GameOver
 {
-    public class GameOverWindow : WindowBase
+    public class GameOverWindow : WindowBase<GameOverWindowView>
     {
-        public GameOverWindow(GameObject windowObject, MenuExitButtonController exitMenuButtonController,
-            RestartButtonController restartButtonController) : base(windowObject)
+        public GameOverWindow(GameOverWindowView windowView, IWindowFactory windowFactory) 
+            : base(windowView, windowFactory) { }
+
+        public override void Compose(IContainerBuilder builder)
         {
-            Register(exitMenuButtonController);
-            Register(restartButtonController);
+            builder.RegisterSingleton(typeof(MenuExitButtonView), _windowView.ExitMenuButtonView);
+            builder.RegisterSingletonWithLifetime<MenuExitButtonController>(new List<Type> { typeof(IWindowController)});
+            
+            builder.RegisterSingleton(typeof(RestartButtonView), _windowView.RestartButtonView);
+            builder.RegisterSingletonWithLifetime<RestartButtonController>(new List<Type> { typeof(IWindowController)});
         }
     }
 }

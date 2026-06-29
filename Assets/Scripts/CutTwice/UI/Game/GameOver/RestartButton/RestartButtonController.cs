@@ -10,10 +10,12 @@ namespace CutTwice.UI.Game.GameOver.RestartButton
 {
     public class RestartButtonController : WindowControllerBase<RestartButtonView>, IInitializable
     {
+        private readonly GlobalStateMachine _globalStateMachine;
         private CancellationToken _cancellationToken;
         
-        public RestartButtonController(RestartButtonView view) : base(view)
+        public RestartButtonController(RestartButtonView view, GlobalStateMachine globalStateMachine) : base(view)
         {
+            _globalStateMachine = globalStateMachine;
             View.RestartButton.onClick.AddListener(RestartGame);
         }
 
@@ -25,7 +27,7 @@ namespace CutTwice.UI.Game.GameOver.RestartButton
 
         private void RestartGame()
         {
-            GlobalStateMachine.Instance.SetStateAsync<GameState>(_cancellationToken).Forget(Debug.LogException);
+            _globalStateMachine.SetStateAsync<GameState>(_cancellationToken).Forget(Debug.LogException);
         }
     }
 }

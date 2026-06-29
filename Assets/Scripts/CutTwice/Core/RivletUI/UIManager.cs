@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using CutTwice.Core.EventBus;
 using CutTwice.Core.Lifecycle;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace CutTwice.Core.RivletUI
     /// Central manager for registered windows. Does NOT instantiate windows — it only manages already-created controllers.
     /// Windows are registered by a strongly-typed identifier TWindow.
     /// UIManager subscribes to Open/Close requests for registered windows on the EventBus.
+    /// Do not register in global scope
     /// </summary>
     public class UIManager : IInitializable, IDisposable
     {
@@ -18,11 +20,17 @@ namespace CutTwice.Core.RivletUI
         private readonly List<Type> _stack = new();
         
         private Action<PopWindowRequest> _globalPopHandler;
-        private readonly CutTwice.Core.EventBus.IEventBus _eventBus;
+        private readonly IEventBus _eventBus;
 
-        public UIManager(CutTwice.Core.EventBus.IEventBus eventBus)
+        public UIManager(List<IWindow> windows, IEventBus eventBus)
         {
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
+            foreach (var window in windows)
+            {
+                typeof(UIManager).GetMethod(nameof(Register))!
+                    .MakeGenericMethod(window.GetType())
+                    .Invoke(this, new object[] { window });
+            }
         }
 
         public UniTask InitAsync(CancellationToken ct)
@@ -35,9 +43,9 @@ namespace CutTwice.Core.RivletUI
 
         public void Register<TWindow>(TWindow window) where TWindow : IWindow
         {
-            var key = typeof(TWindow);
-            if (_registry.ContainsKey(key))
-                throw new InvalidOperationException($"Window type {key} already registered");
+            var type = window.GetType();
+            if (_registry.ContainsKey(type))
+                throw new InvalidOperationException($"Window type {type} already registered");
 
             // create typed handlers so we can subscribe/unsubscribe later
             Action<OpenWindowRequest<TWindow>> openHandler = req => window.Show(req?.Payload);
@@ -50,7 +58,7 @@ namespace CutTwice.Core.RivletUI
             _eventBus.Subscribe(pushHandler);
             _eventBus.Subscribe(popToHandler);
 
-            _registry[key] = new RegisteredWindow
+            _registry[type] = new RegisteredWindow
             {
                 Window = window,
                 Unsubscribe = () =>

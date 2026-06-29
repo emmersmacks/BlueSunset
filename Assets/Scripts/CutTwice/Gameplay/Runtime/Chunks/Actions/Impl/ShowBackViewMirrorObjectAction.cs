@@ -1,19 +1,22 @@
 ﻿using System.Threading;
+using CutTwice.Gameplay.Runtime.Chunks.ModuleLoader.Dto;
 using CutTwice.Gameplay.Runtime.Hazards.Components;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace CutTwice.Gameplay.Runtime.Chunks.Actions
 {
+    [SequenceAction(ActionType.BackviewObject)]
     public class ShowBackViewMirrorObjectAction : ISequenceActionRuntime
     {
         private readonly BackviewMirrorHazardController _backviewMirrorHazardController;
-
+        
         public ShowBackViewMirrorObjectAction(BackviewMirrorHazardController backviewMirrorHazardController)
         {
             _backviewMirrorHazardController = backviewMirrorHazardController;
         }
 
-        public UniTask Init(CancellationToken ct)
+        public UniTask Init(JObject parameters, CancellationToken ct)
         {
             return UniTask.CompletedTask;
         }

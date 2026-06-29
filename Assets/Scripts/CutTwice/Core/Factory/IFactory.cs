@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CutTwice.Core.Factory
 {
-    public interface IFactoryBase
+    public interface IGameObjectFactory
     {
         GameObject InstantiatePrefab(GameObject prefab,
             Vector3 position,

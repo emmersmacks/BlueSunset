@@ -10,19 +10,9 @@ namespace CutTwice.Core.GameStates
     /// </summary>
     public class GlobalStateMachine : StateMachineBase<IGlobalState>
     {
-        public static GlobalStateMachine Instance { get; private set; }
-
         public GlobalStateMachine(List<IGlobalState> states) : base(states)
         {
             _currentState = new BootstrapState();
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-            else
-            {
-                throw new Exception("There are two statement instances of GameStateMachine");
-            }
         }
     }
 }

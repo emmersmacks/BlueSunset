@@ -31,7 +31,7 @@ namespace CutTwice.Gameplay
             ObstacleSequenceBuilder builder, 
             ObstacleRuntimeController runtime, 
             IEventBus eventBus,
-            IStateMachine gameStateMachine)
+            GameStateMachine gameStateMachine)
         {
             _service = service;
             _builder = builder;
@@ -40,35 +40,29 @@ namespace CutTwice.Gameplay
             _gameStateMachine = gameStateMachine;
         }
 
-        public UniTask InitAsync(CancellationToken ct)
+        public async UniTask InitAsync(CancellationToken ct)
         {
             _destroyCancellationToken = ct;
             _sessionCancellationTokenSource = new CancellationTokenSource();
             _eventBus.Subscribe<GameOverEvent>(OnGameOverRequested);
-            StartSequenceAsync(new SequenceModulePreviewDto { Name = "DefaultSequenceModule" }, true, true, _sessionCancellationTokenSource.Token).Forget(Debug.LogException);
-            return UniTask.CompletedTask;
-        }
-
-        private async UniTask StartSequenceAsync(SequenceModulePreviewDto modulePreviewDto, bool isLoop, bool randomize,
-            CancellationToken ct)
-        {
             _gameStarted = true;
             
-            var dto = await _service.LoadModuleAsync(modulePreviewDto, ct);
-            await _builder.Init(ct);
-            
-            var sequence = _builder.BuildModule(dto);
-            await _runtime.Init(sequence, randomize, ct);
+            var sequence = await LoadSequenceAsync(new SequenceModulePreviewDto { Name = "DefaultSequenceModule" }, _sessionCancellationTokenSource.Token);
+            StartSequenceAsync(sequence, true, true, ct).Forget(Debug.LogException);
+        }
 
+        private async UniTask<ObstacleSequenceModuleRuntime> LoadSequenceAsync(SequenceModulePreviewDto modulePreviewDto, CancellationToken ct)
+        {
+            var dto = await _service.LoadModuleAsync(modulePreviewDto, ct);
+            return await _builder.BuildModuleAsync(dto, ct);
+        }
+
+        private async UniTask StartSequenceAsync(ObstacleSequenceModuleRuntime sequence, bool isLoop, bool randomize, CancellationToken ct)
+        {
             do
             {
-                if (ct.IsCancellationRequested)
-                {
-                    break;
-                }
-                
-                await _runtime.Run(ct);
-            } while (isLoop);
+                await _runtime.Run(sequence, randomize, ct);
+            } while (isLoop && _gameStarted && !ct.IsCancellationRequested);
         }
 
         public void Tick()
@@ -81,12 +75,15 @@ namespace CutTwice.Gameplay
 
         private void OnGameOverRequested(GameOverEvent obj)
         {
+            if(!_gameStarted)
+                return;
+            
             _gameStarted = false;
             
             _sessionCancellationTokenSource.Cancel();
             _sessionCancellationTokenSource.Dispose();
             _sessionCancellationTokenSource = null;
-            
+
             _gameStateMachine.SetStateAsync<EndGameState>(_destroyCancellationToken).Forget(Debug.LogException);
         }
 

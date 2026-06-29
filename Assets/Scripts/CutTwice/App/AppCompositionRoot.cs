@@ -1,43 +1,35 @@
-﻿using System.Collections.Generic;
-using CutTwice.App.GlobalStates;
+﻿using CutTwice.App.GlobalStates;
 using CutTwice.Core.GameStates;
 using CutTwice.Core.Initialization;
 using CutTwice.Core.Lifecycle;
-using CutTwice.Core.RivletUI;
 using CutTwice.Gameplay;
 using CutTwice.Gameplay.GlobalStates;
 using CutTwice.Menu.GlobalStates;
 using CutTwice.Services;
+using CascadeDI.Builder;
 
 namespace CutTwice.App
 {
     public class AppCompositionRoot : CompositionRoot
     {
-        public override void Compose(RuntimeLifecycleManager lifecycleManager)
+        public override void Compose(IContainerBuilder builder, RuntimeLifecycleManager lifecycleManager)
         {
+            
+            builder.RegisterSingleton<RuntimeLifecycleManager>(lifecycleManager);
+            
             // Services
-            var purchaseService = lifecycleManager.Register(new PurchaseService());
-
-            // Event bus
-            var eventBus = lifecycleManager.Register(new Core.EventBus.EventBus());
-
-            // UI
-            var uiManager = lifecycleManager.Register(new UIManager(eventBus));
+            builder.RegisterSingleton<PurchaseService>();
 
             // AppStateMachine
-            var bootstrapState = lifecycleManager.Register(new BootstrapState());
-            var mainMenuState = lifecycleManager.Register(new MainMenuState());
-            var gameState = lifecycleManager.Register(new GameState());
-
-            var stateMachine = lifecycleManager.Register(new GlobalStateMachine(new List<IGlobalState>()
-            {
-                bootstrapState,
-                mainMenuState,
-                gameState,
-            }));
+            builder.RegisterSingleton<IGlobalState, BootstrapState>();
+            builder.RegisterSingleton<IGlobalState, MainMenuState>();
+            builder.RegisterSingleton<IGlobalState, GameState>();
+            builder.RegisterSingleton<GlobalStateMachine>();
             
             // Player data
             PlayerData.Load();
+            
+            builder.RegisterSingletonWithLifetime<AppInitializer>();
         }
     }
 }

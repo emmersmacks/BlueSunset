@@ -1,4 +1,4 @@
-﻿using System.Threading;
+using System.Threading;
 using CutTwice.Core.GameStates;
 using CutTwice.Core.Lifecycle;
 using CutTwice.Gameplay.GameStates;
@@ -17,7 +17,7 @@ namespace CutTwice.Gameplay.Initializers
 
         public async UniTask InitAsync(CancellationToken ct)
         {
-            await _gameStateMachine.SetStateAsync<StartGameState>(ct);
+            
         }
     }
 }

@@ -5,6 +5,7 @@ using CutTwice.Core.Lifecycle;
 using CutTwice.Gameplay.Runtime.Interactables.Components;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using UnityEngine;
 
 namespace CutTwice.Gameplay.Runtime.Hazards.Components
 {
@@ -15,6 +16,8 @@ namespace CutTwice.Gameplay.Runtime.Hazards.Components
         
         private Tweener _reflectionTweener = null;
 
+        private Material _material;
+        
         public ReflectionObjectController(ReflectionObjectPresenter presenter, RotateMirrorController rotateMirrorController)
         {
             _presenter = presenter;
@@ -24,6 +27,7 @@ namespace CutTwice.Gameplay.Runtime.Hazards.Components
 
         public UniTask InitAsync(CancellationToken ct)
         {
+            _material = _presenter.GetComponent<MeshRenderer>().sharedMaterial;
             HideReflectionObject();
             return UniTask.CompletedTask;
         }
@@ -43,7 +47,7 @@ namespace CutTwice.Gameplay.Runtime.Hazards.Components
                 throw new Exception("Cannot show reflection object while it is active.");
             }
             
-            _reflectionTweener = _presenter.Material.DOFade(1f, duration);
+            _reflectionTweener = _material.DOFade(1f, duration);
         }
 
         public void HideReflectionObject()
@@ -51,9 +55,9 @@ namespace CutTwice.Gameplay.Runtime.Hazards.Components
             _reflectionTweener.Kill();
             _reflectionTweener = null;
             
-            var color = _presenter.Material.color;
+            var color = _material.color;
             color.a = 0f;
-            _presenter.Material.color = color;
+            _material.color = color;
         }
 
         public void Dispose()

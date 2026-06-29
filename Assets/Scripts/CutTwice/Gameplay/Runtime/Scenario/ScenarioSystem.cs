@@ -7,28 +7,34 @@ using Cysharp.Threading.Tasks;
 
 namespace CutTwice.Gameplay.Runtime.Scenario
 {
-    public class ScenarioManager : ITickable, IInitializable
+    [Serializable]
+    public class ScenarioManagerSettings
+    {
+        public int InitialStageIndex;
+    }
+    
+    public class ScenarioSystem : ITickable, IInitializable
     {
         private Action<ScenarioStage> _stageStarted;
         
         private ScenarioStage _activeStage;
         
         private int _currentStageIndex;
-        private int _initialStageIndex;
+        private ScenarioManagerSettings _settings;
         
         private readonly PlayerInputController _playerInputController;
         private readonly ScenarioStage[] _stages;
 
-        public ScenarioManager(int initialStageIndex, PlayerInputController playerInputController, ScenarioStage[] stages)
+        public ScenarioSystem(ScenarioManagerSettings settings, PlayerInputController playerInputController, ScenarioStage[] stages)
         {
-            _initialStageIndex = initialStageIndex;
+            _settings = settings;
             _playerInputController = playerInputController;
             _stages = stages;
         }
 
         public UniTask InitAsync(CancellationToken ct)
         {
-            _currentStageIndex = _initialStageIndex;
+            _currentStageIndex = _settings.InitialStageIndex;
             StartNewStage(_stages[_currentStageIndex]);
             return UniTask.CompletedTask;
         }

@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Threading;
+using CutTwice.Core.Factory;
 using CutTwice.Core.Lifecycle;
 using CutTwice.Gameplay.Factories;
+using CutTwice.Gameplay.Runtime.Chunks.ModuleLoader.Dto;
 using CutTwice.Gameplay.Runtime.Chunks.Serialization;
 using CutTwice.Gameplay.Runtime.Chunks.Serialization.SimpleTypes;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Object = UnityEngine.Object;
 
 namespace CutTwice.Gameplay.Runtime.Chunks.Actions
 {
+    [SequenceAction(ActionType.SpawnTraffic)]
     public class SpawnTrafficAction : ISequenceActionRuntime, IDisposable
     {
         [Serializable]
@@ -20,31 +24,29 @@ namespace CutTwice.Gameplay.Runtime.Chunks.Actions
             
             public SimpleRotation Rotation;
         }
-        
-        private readonly Parameters _parameters;
-        private readonly TrafficFactory _factory;
+
+        private readonly IGameObjectFactory _gameObjectFactory;
         private readonly RuntimeLifecycleManager _lifecycleManager;
 
+        private Parameters _parameters;
         private TrafficContext _trafficContext;
         
-        public SpawnTrafficAction(Parameters parameters, TrafficFactory factory,
-            RuntimeLifecycleManager lifecycleManager)
+        public SpawnTrafficAction(TrafficGameObjectFactory gameObjectFactory, RuntimeLifecycleManager lifecycleManager)
         {
-            _parameters = parameters;
-            _factory = factory;
+            _gameObjectFactory = gameObjectFactory;
             _lifecycleManager = lifecycleManager;
         }
         
-        UniTask ISequenceActionRuntime.Init(CancellationToken ct)
+        UniTask ISequenceActionRuntime.Init(JObject parameters, CancellationToken ct)
         {
+            _parameters = parameters.ToObject<Parameters>();
             return UniTask.CompletedTask;
         }
 
         async UniTask ISequenceActionRuntime.Run(CancellationToken ct)
         {
-            _trafficContext = await _factory.Create(_parameters.Position, _parameters.Rotation) as TrafficContext;
+            _trafficContext = await _gameObjectFactory.Create(_parameters.Position, _parameters.Rotation) as TrafficContext;
             
-            // TODO: Simplify this
             await _lifecycleManager.RuntimeRegister(_trafficContext.ObjectMoverController, ct);
             await _lifecycleManager.RuntimeRegister(_trafficContext.RaycastStripController, ct);
             
@@ -62,6 +64,7 @@ namespace CutTwice.Gameplay.Runtime.Chunks.Actions
         public void Dispose()
         {
             _trafficContext.ObjectMoverController.OnFinished -= DespawnObject;
+            DespawnObject();
         }
     }
 }

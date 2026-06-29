@@ -1,6 +1,6 @@
 ﻿namespace CutTwice.Core.Lifecycle
 {
-    public interface ILateTickable
+    public interface ILateTickable : ILifecycleObject
     {
         void LateTick();
     }

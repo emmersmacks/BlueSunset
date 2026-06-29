@@ -1,9 +1,8 @@
 ﻿using System.Threading;
-using CutTwice.Core.GameStates;
 using CutTwice.Core.Initialization;
-using CutTwice.Menu.GlobalStates;
+using CutTwice.Core.Lifecycle;
 using Cysharp.Threading.Tasks;
-using UnityEngine.SceneManagement;
+using CascadeDI;
 
 namespace CutTwice.App
 {
@@ -14,14 +13,12 @@ namespace CutTwice.App
             return new AppCompositionRoot();
         }
 
-        protected override async UniTask InitAsync(CancellationToken cancellationToken)
+        protected override UniTask InitAsync(IScope scope, CancellationToken cancellationToken)
         {
+            var appLifecycleManager = scope.Resolve<RuntimeLifecycleManager>();
+            DontDestroyOnLoad(appLifecycleManager.gameObject);
             DontDestroyOnLoad(gameObject);
-
-            if (SceneManager.GetActiveScene().buildIndex == 0)
-            {
-                await GlobalStateMachine.Instance.SetStateAsync<MainMenuState>(destroyCancellationToken);
-            }
+            return UniTask.CompletedTask;
         }
     }
 }

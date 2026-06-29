@@ -7,12 +7,12 @@ namespace CutTwice.Gameplay.Runtime.Obstacles.Components
     public class RaycastStripController : IFixedTickable
     {
         private readonly RaycastStripPresenter _presenter;
-        private readonly CutTwice.Core.EventBus.IEventBus _eventBus;
+        private readonly IEventBus _eventBus;
 
         private Vector3 _previousPosition;
         private bool _hasPrevious;
 
-        public RaycastStripController(RaycastStripPresenter presenter, CutTwice.Core.EventBus.IEventBus eventBus)
+        public RaycastStripController(RaycastStripPresenter presenter, IEventBus eventBus)
         {
             _presenter = presenter;
             _hasPrevious = false;
@@ -54,15 +54,7 @@ namespace CutTwice.Gameplay.Runtime.Obstacles.Components
                 {
                     if (!gameOverInvoked)
                     {
-                            try
-                            {
-                                _eventBus.Publish(new GameOverEvent());
-                            }
-                            catch
-                            {
-                                // swallow
-                            }
-
+                        _eventBus.Publish(new GameOverEvent());
                         gameOverInvoked = true;
                     }
 

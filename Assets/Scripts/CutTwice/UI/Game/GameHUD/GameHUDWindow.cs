@@ -1,17 +1,24 @@
 ﻿using CutTwice.Core.RivletUI;
 using CutTwice.UI.Game.GameHUD.SleepBar;
 using CutTwice.UI.Game.GameHUD.TimePanel;
-using UnityEngine;
+using CascadeDI.Builder;
+using CutTwice.Core.Factory;
+using CutTwice.Core.Lifecycle;
 
 namespace CutTwice.UI.Game.GameHUD
 {
-    public class GameHUDWindow : WindowBase
+    public class GameHUDWindow : WindowBase<GameHUDWindowView>
     {
-        public GameHUDWindow(GameObject windowObject, TimePanelController timePanelController,
-            SleepBarController sleepBarController) : base(windowObject)
+        public GameHUDWindow(GameHUDWindowView windowView, IWindowFactory windowFactory) 
+            : base(windowView, windowFactory) { }
+
+        public override void Compose(IContainerBuilder builder)
         {
-            Register(timePanelController);
-            Register(sleepBarController);
+            builder.RegisterSingleton(typeof(SleepBarView), _windowView.SleepBarView);
+            builder.RegisterSingletonWithLifetime<SleepBarController>();
+            
+            builder.RegisterSingleton(typeof(TimePanelView), _windowView.TimePanelView);
+            builder.RegisterSingletonWithLifetime<TimePanelController>();
         }
     }
 }

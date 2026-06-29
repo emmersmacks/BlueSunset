@@ -2,11 +2,13 @@
 using CutTwice.Gameplay.Runtime.Hazards.Components;
 using CutTwice.Gameplay.Runtime.Interactables.Components;
 using CutTwice.Gameplay.Runtime.Road.Components;
+using CutTwice.Gameplay.Runtime.Scenario;
 using CutTwice.Gameplay.Runtime.Sound.Components;
 using CutTwice.UI.Game.GameHUD;
 using CutTwice.UI.Game.GameOver;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 
 namespace CutTwice.Gameplay
 {
@@ -27,7 +29,10 @@ namespace CutTwice.Gameplay
         
         public MusicLoopPresenter LeftSideHazardLoopSoundPresenter;
 
-        public GameHUDView GameHUDView;
-        public GameOverView GameOverView;
+        public GameHUDWindowView gameHUDWindowView;
+        public GameOverWindowView gameOverWindowView;
+        
+        public ScenarioManagerSettings ScenarioManagerSettings;
+        public Camera PlayerCamera;
     }
 }

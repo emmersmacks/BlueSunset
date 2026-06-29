@@ -9,7 +9,6 @@ namespace CutTwice.Gameplay.Runtime.Chunks.Services
 {
     public class ObstacleSequenceService : IObstacleSequenceService
     {
-        private SequenceModulePreviewDto[] _allModules;
         private ISequenceModuleLoader _sequenceModuleLoader;
         
         public ObstacleSequenceService(ISequenceModuleLoader sequenceModuleLoader)
@@ -17,9 +16,9 @@ namespace CutTwice.Gameplay.Runtime.Chunks.Services
             _sequenceModuleLoader = sequenceModuleLoader;
         }
 
-        public async UniTask InitAsync(CancellationToken ct)
+        public UniTask InitAsync(CancellationToken ct)
         {
-            _allModules = await _sequenceModuleLoader.LoadModulesListAsync(ct);
+            return UniTask.CompletedTask;
         }
 
         async UniTask<SequenceModuleDto> IObstacleSequenceService.LoadModuleAsync(SequenceModulePreviewDto module, CancellationToken ct)

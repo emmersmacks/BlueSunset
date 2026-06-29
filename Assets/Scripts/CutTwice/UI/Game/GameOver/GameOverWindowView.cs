@@ -1,10 +1,11 @@
-﻿using CutTwice.UI.Game.GameOver.MenuExitButton;
+﻿using CutTwice.Core.RivletUI;
+using CutTwice.UI.Game.GameOver.MenuExitButton;
 using CutTwice.UI.Game.GameOver.RestartButton;
 using UnityEngine;
 
 namespace CutTwice.UI.Game.GameOver
 {
-    public class GameOverView : MonoBehaviour
+    public class GameOverWindowView : WindowViewBase
     {
         public MenuExitButtonView ExitMenuButtonView;
         public RestartButtonView RestartButtonView;
