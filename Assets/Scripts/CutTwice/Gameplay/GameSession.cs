@@ -59,10 +59,17 @@ namespace CutTwice.Gameplay
 
         private async UniTask StartSequenceAsync(ObstacleSequenceModuleRuntime sequence, bool isLoop, bool randomize, CancellationToken ct)
         {
-            do
+            try
             {
-                await _runtime.Run(sequence, randomize, ct);
-            } while (isLoop && _gameStarted && !ct.IsCancellationRequested);
+                do
+                {
+                    await _runtime.Run(sequence, randomize, ct);
+                } while (isLoop && _gameStarted && !ct.IsCancellationRequested);
+            }
+            catch (OperationCanceledException e)
+            {
+                Console.WriteLine("Sequence cancelled");
+            }
         }
 
         public void Tick()
