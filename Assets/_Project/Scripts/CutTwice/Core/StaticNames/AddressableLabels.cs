@@ -4,5 +4,6 @@
     {
         public static readonly string SequenceModule = "SequenceModule";
         public static readonly string ChunkListPrefix = "Chunk";
+        public static readonly string MainAudioMixer = "MainAudioMixer";
     }
 }

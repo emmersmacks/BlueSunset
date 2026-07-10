@@ -46,6 +46,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db8bd4480e2714147b7d1f1b171a1db4
+    m_Address: MainAudioMixer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eda3526d82fb89f4ca33f46fc679c01d
     m_Address: AppBootstrap
     m_ReadOnly: 0

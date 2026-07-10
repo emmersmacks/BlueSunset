@@ -2,6 +2,7 @@
 using System.Threading;
 using CutTwice.Core.GameStates;
 using CutTwice.Core.RivletUI;
+using CutTwice.Services;
 using CutTwice.UI.Game.GameOver;
 using Cysharp.Threading.Tasks;
 
@@ -10,10 +11,12 @@ namespace CutTwice.Gameplay.GameStates
     public class EndGameState : IGameState
     {
         private readonly CutTwice.Core.EventBus.IEventBus _eventBus;
+        private readonly AudioSnapshotService _audioSnapshotService;
 
-        public EndGameState(CutTwice.Core.EventBus.IEventBus eventBus)
+        public EndGameState(CutTwice.Core.EventBus.IEventBus eventBus, AudioSnapshotService audioSnapshotService)
         {
             _eventBus = eventBus;
+            _audioSnapshotService = audioSnapshotService;
         }
 
         public async UniTask EnterAsync(IStateMachine stateMachine, CancellationToken ct)
@@ -39,8 +42,7 @@ namespace CutTwice.Gameplay.GameStates
             // TODO: Move To Audio System
             //CrashEffect.Play();
             await UniTask.Delay(TimeSpan.FromSeconds(1.5));
-            // TODO: Move To Audio System
-            //gm.Mixer.TransitionToSnapshots(new[] { gm.Normal, gm.Crash, gm.Menu }, new[] { 0f, 1f, 0f }, 0);
+            _audioSnapshotService.TransitionTo(AudioSnapshot.GameOver, 1f);
         }
 
         public void Exit()

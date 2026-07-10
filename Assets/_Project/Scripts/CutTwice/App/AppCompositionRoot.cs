@@ -18,7 +18,8 @@ namespace CutTwice.App
             builder.RegisterSingleton<RuntimeLifecycleManager>(lifecycleManager);
             
             // Services
-            builder.RegisterSingleton<PurchaseService>();
+            builder.RegisterSingletonWithLifetime<PurchaseService>();
+            builder.RegisterSingletonWithLifetime<AudioSnapshotService>();
 
             // AppStateMachine
             builder.RegisterSingleton<IGlobalState, BootstrapState>();
