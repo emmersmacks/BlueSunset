@@ -8,7 +8,6 @@ namespace CutTwice.Gameplay.Runtime.Sound.Components
     public class MusicLoopController : IInitializable, ITickable
     {
         private readonly MusicLoopPresenter _presenter;
-        private bool introFinished;
         
         public MusicLoopController(MusicLoopPresenter presenter)
         {
@@ -32,7 +31,6 @@ namespace CutTwice.Gameplay.Runtime.Sound.Components
             if (_presenter.AudioSource.time >= _presenter.LoopEndTime)
             {
                 _presenter.AudioSource.time = _presenter.LoopStartTime;
-                introFinished = true;
             }
         }
     }

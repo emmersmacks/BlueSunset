@@ -17,7 +17,7 @@ namespace CutTwice.Gameplay.Runtime.Chunks.ModuleLoader
             return assets.Select(asset => new SequenceModulePreviewDto { Name = asset.name }).ToArray();
         }
 
-        async UniTask<ChunkListDto> ISequenceModuleLoader.LoadChunkAsync(ChunkType chunkType, CancellationToken ct = default)
+        async UniTask<ChunkListDto> ISequenceModuleLoader.LoadChunkAsync(ChunkType chunkType, CancellationToken ct)
         {
             var asset = await AddressablesAsyncLoader.LoadAssetAsync<TextAsset>($"{AddressableLabels.ChunkListPrefix}/{chunkType.ToString()}", ct);
             return JsonConvert.DeserializeObject<ChunkListDto>(asset.text);

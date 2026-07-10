@@ -10,8 +10,6 @@ namespace CutTwice.Gameplay.Factories
     {
         public ObjectMoverController ObjectMoverController;
         public RaycastStripController RaycastStripController;
-        
-        public GameObject GameObject;
     }
     
     public class TrafficGameObjectFactory : GameObjectFactory  {
