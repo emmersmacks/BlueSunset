@@ -73,7 +73,7 @@ namespace CutTwice.Gameplay
             
             var rotateSideviewMirrorController = lifecycleManager.Register(new RotateMirrorController(_gameSceneReferences.RotateSideviewMirrorPresenter, playerInputController));
             var sideviewReflectionObjectController = lifecycleManager.Register(new ReflectionObjectController(_gameSceneReferences.SideviewReflectionObjectPresenter, rotateSideviewMirrorController));
-            var sideviewMirrorHazardController = lifecycleManager.Register(new SideviewMirrorHazardController(_gameSceneReferences.SideviewMirrorHazardPresenter, sideviewReflectionObjectController, rotateBackviewMirrorController, eventBus));
+            var sideviewMirrorHazardController = lifecycleManager.Register(new SideviewMirrorHazardController(_gameSceneReferences.SideviewMirrorHazardPresenter, sideviewReflectionObjectController, rotateSideviewMirrorController, eventBus));
             var sideviewHazardSoundLoopController = lifecycleManager.Register(new MusicLoopController(_gameSceneReferences.LeftSideHazardLoopSoundPresenter));
             builder.RegisterSingleton(typeof(SideviewMirrorHazardController), sideviewMirrorHazardController);
 
