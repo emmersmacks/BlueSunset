@@ -5,15 +5,15 @@ namespace CutTwice.Core.Render
 {
     public class CustomFullScreenCameraRendererFeature : FullScreenPassRendererFeature
     {
-        public string targetTag;
-
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
             Camera camera = renderingData.cameraData.camera;
-            if (camera.gameObject.tag != targetTag)
+            if (!camera.gameObject.TryGetComponent(out FogCameraRenderer fogCameraRenderer))
             {
                 return;
             }
+            
+            passMaterial = fogCameraRenderer.fogMaterial;
             
             base.AddRenderPasses(renderer, ref renderingData);
         }
