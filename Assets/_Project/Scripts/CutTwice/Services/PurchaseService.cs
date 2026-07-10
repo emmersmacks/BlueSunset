@@ -1,11 +1,13 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
+using CutTwice.Core.Lifecycle;
 using CutTwice.Gameplay;
 using Cysharp.Threading.Tasks;
 using YG;
 
 namespace CutTwice.Services
 {
-    public class PurchaseService : IService
+    public class PurchaseService : IService, IInitializable, IDisposable
     {
         public UniTask InitAsync(CancellationToken ct)
         {
@@ -20,10 +22,9 @@ namespace CutTwice.Services
             PlayerData.Save();
         }
 
-        public UniTask DestroyAsync()
+        public void Dispose()
         {
             YG2.onPurchaseSuccess -= OnPurchaseSuccess;
-            return default;
         }
     }
 }
