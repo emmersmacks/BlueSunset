@@ -2,7 +2,7 @@
 {
     public static class SceneNames
     {
-        public static string Game = "GameLoop";
+        public static string Game = "Game";
         public static string MainMenu = "MainMenu";
     }
 }
