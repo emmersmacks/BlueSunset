@@ -8,7 +8,6 @@ using CutTwice.Core.Lifecycle;
 using CutTwice.Core.RivletUI;
 using CutTwice.Gameplay.Factories;
 using CutTwice.Gameplay.GameStates;
-using CutTwice.Gameplay.Initializers;
 using CutTwice.Gameplay.Runtime.Chunks;
 using CutTwice.Gameplay.Runtime.Chunks.Actions;
 using CutTwice.Gameplay.Runtime.Chunks.ModuleLoader;
@@ -43,7 +42,7 @@ namespace CutTwice.Gameplay
             ComposeUIModule(builder);
             
             // Initialization
-            builder.RegisterSingleton<GameInitializer>();
+            builder.RegisterSingletonWithLifetime<GameInitializer>();
         }
 
         private void ComposeGameplayModule(IContainerBuilder builder, RuntimeLifecycleManager lifecycleManager)

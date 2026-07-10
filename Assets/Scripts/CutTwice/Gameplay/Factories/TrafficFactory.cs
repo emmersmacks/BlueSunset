@@ -14,7 +14,7 @@ namespace CutTwice.Gameplay.Factories
         public GameObject GameObject;
     }
     
-    public class TrafficGameObjectFactory : GameObjectGameObjectFactory  {
+    public class TrafficGameObjectFactory : GameObjectFactory  {
         private readonly Core.EventBus.IEventBus _eventBus;
 
         public TrafficGameObjectFactory(Core.EventBus.IEventBus eventBus)

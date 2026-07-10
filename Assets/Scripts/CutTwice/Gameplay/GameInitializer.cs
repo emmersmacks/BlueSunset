@@ -4,7 +4,7 @@ using CutTwice.Core.Lifecycle;
 using CutTwice.Gameplay.GameStates;
 using Cysharp.Threading.Tasks;
 
-namespace CutTwice.Gameplay.Initializers
+namespace CutTwice.Gameplay
 {
     public class GameInitializer : IInitializable
     {
@@ -17,7 +17,7 @@ namespace CutTwice.Gameplay.Initializers
 
         public async UniTask InitAsync(CancellationToken ct)
         {
-            
+            await _gameStateMachine.SetStateAsync<StartGameState>(ct);
         }
     }
 }

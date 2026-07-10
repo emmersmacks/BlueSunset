@@ -10,9 +10,9 @@ namespace CutTwice.Gameplay.GameStates
 {
     public class StartGameState : IGameState
     {
-        private readonly EventBus _eventBus;
+        private readonly IEventBus _eventBus;
 
-        public StartGameState(EventBus eventBus)
+        public StartGameState(IEventBus eventBus)
         {
             _eventBus = eventBus;
         }

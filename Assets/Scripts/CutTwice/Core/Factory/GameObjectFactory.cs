@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CutTwice.Core.Factory
 {
-    public abstract class GameObjectGameObjectFactory : IGameObjectFactory, IInitializable
+    public abstract class GameObjectFactory : IGameObjectFactory, IInitializable
     {
         protected abstract string PrefabKey { get; }
         
