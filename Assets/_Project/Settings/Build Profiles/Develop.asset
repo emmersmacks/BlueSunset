@@ -41,7 +41,7 @@ MonoBehaviour:
     - line: '|   useOnDemandResources: 0'
     - line: '|   accelerometerFrequency: 60'
     - line: '|   companyName: DefaultCompany'
-    - line: '|   productName: Microsleep'
+    - line: '|   productName: Blue Sunset'
     - line: '|   defaultCursor: {instanceID: 0}'
     - line: '|   cursorHotspot: {x: 0, y: 0}'
     - line: '|   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b:
@@ -996,7 +996,7 @@ MonoBehaviour:
     - line: '|   cloudProjectId: 4ba7d686-10e0-422a-8675-c755baa5d6a4'
     - line: '|   framebufferDepthMemorylessMode: 0'
     - line: '|   qualitySettingsNames: []'
-    - line: '|   projectName: Microsleep'
+    - line: '|   projectName: Blue Sunset'
     - line: '|   organizationId: zubrik'
     - line: '|   cloudEnabled: 0'
     - line: '|   legacyClampBlendShapeWeights: 0'
