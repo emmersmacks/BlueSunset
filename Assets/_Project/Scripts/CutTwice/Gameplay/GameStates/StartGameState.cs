@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using CutTwice.App.LoadingScreen;
 using CutTwice.Core.EventBus;
 using CutTwice.Core.GameStates;
 using CutTwice.Core.RivletUI;
@@ -13,15 +14,18 @@ namespace CutTwice.Gameplay.GameStates
     {
         private readonly IEventBus _eventBus;
         private readonly AudioSnapshotService _audioSnapshotService;
+        private readonly LoadingScreenController _loadingScreenController;
 
-        public StartGameState(IEventBus eventBus, AudioSnapshotService audioSnapshotService)
+        public StartGameState(IEventBus eventBus, AudioSnapshotService audioSnapshotService, LoadingScreenController loadingScreenController)
         {
             _eventBus = eventBus;
             _audioSnapshotService = audioSnapshotService;
+            _loadingScreenController = loadingScreenController;
         }
 
         public async UniTask EnterAsync(IStateMachine stateMachine, CancellationToken ct)
         {
+            _loadingScreenController.Hide();
             Time.timeScale = 1f;
 
             _audioSnapshotService.TransitionTo(AudioSnapshot.Game);

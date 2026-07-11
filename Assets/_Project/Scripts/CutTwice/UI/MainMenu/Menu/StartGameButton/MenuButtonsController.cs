@@ -37,7 +37,7 @@ namespace CutTwice.UI.MainMenu.Menu.StartGameButton
 
         private void StartGame()
         {
-            _globalStateMachine.SetStateAsync<GameState>(_cancellationToken).Forget(Debug.LogException);
+            _globalStateMachine.SetStateAsync<GlobalGameState>(_cancellationToken).Forget(Debug.LogException);
         }
 
         private void ShowCredits()

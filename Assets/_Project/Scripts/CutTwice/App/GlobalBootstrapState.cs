@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 
 namespace CutTwice.App.GlobalStates
 {
-    public class BootstrapState : IGlobalState
+    public class GlobalBootstrapState : IGlobalState
     {
         public UniTask EnterAsync(IStateMachine stateMachine, CancellationToken ct)
         {

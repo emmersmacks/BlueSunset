@@ -27,7 +27,7 @@ namespace CutTwice.UI.Game.GameOver.RestartButton
 
         private void RestartGame()
         {
-            _globalStateMachine.SetStateAsync<GameState>(_cancellationToken).Forget(Debug.LogException);
+            _globalStateMachine.SetStateAsync<GlobalGameState>(_cancellationToken).Forget(Debug.LogException);
         }
     }
 }

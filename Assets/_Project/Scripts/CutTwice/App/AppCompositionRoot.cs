@@ -1,4 +1,5 @@
 ﻿using CutTwice.App.GlobalStates;
+using CutTwice.App.LoadingScreen;
 using CutTwice.Core.GameStates;
 using CutTwice.Core.Initialization;
 using CutTwice.Core.Lifecycle;
@@ -12,6 +13,13 @@ namespace CutTwice.App
 {
     public class AppCompositionRoot : CompositionRoot
     {
+        private readonly AppSceneReferences _sceneReferences;
+
+        public AppCompositionRoot(AppSceneReferences sceneReferences)
+        {
+            _sceneReferences = sceneReferences;
+        }
+
         public override void Compose(IContainerBuilder builder, RuntimeLifecycleManager lifecycleManager)
         {
             
@@ -21,10 +29,14 @@ namespace CutTwice.App
             builder.RegisterSingletonWithLifetime<PurchaseService>();
             builder.RegisterSingletonWithLifetime<AudioSnapshotService>();
 
+            // UI
+            builder.RegisterSingleton(typeof(LoadingScreenView), _sceneReferences.LoadingScreen);
+            builder.RegisterSingletonWithLifetime<LoadingScreenController>();
+
             // AppStateMachine
-            builder.RegisterSingleton<IGlobalState, BootstrapState>();
-            builder.RegisterSingleton<IGlobalState, MainMenuState>();
-            builder.RegisterSingleton<IGlobalState, GameState>();
+            builder.RegisterSingleton<IGlobalState, GlobalBootstrapState>();
+            builder.RegisterSingleton<IGlobalState, GlobalMainMenuState>();
+            builder.RegisterSingleton<IGlobalState, GlobalGameState>();
             builder.RegisterSingleton<GlobalStateMachine>();
             
             // Player data

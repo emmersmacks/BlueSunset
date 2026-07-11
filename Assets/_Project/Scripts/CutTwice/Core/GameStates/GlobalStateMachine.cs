@@ -12,7 +12,7 @@ namespace CutTwice.Core.GameStates
     {
         public GlobalStateMachine(List<IGlobalState> states) : base(states)
         {
-            _currentState = new BootstrapState();
+            _currentState = new GlobalBootstrapState();
         }
     }
 }

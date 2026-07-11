@@ -20,7 +20,7 @@ namespace CutTwice.App
         {
             if (SceneManager.GetActiveScene().buildIndex == 0)
             {
-                await _globalStateMachine.SetStateAsync<MainMenuState>(ct);
+                await _globalStateMachine.SetStateAsync<GlobalMainMenuState>(ct);
             }
         }
     }
