@@ -24,7 +24,6 @@ namespace CutTwice.Menu.GlobalStates
             _loadingScreenController.Show();
             SceneManager.LoadScene(SceneNames.MainMenu);
             _audioSnapshotService.TransitionTo(AudioSnapshot.Menu);
-            _loadingScreenController.Hide();
             return UniTask.CompletedTask;
         }
 
