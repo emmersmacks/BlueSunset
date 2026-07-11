@@ -5,6 +5,7 @@ Shader "CutTwice/VolumetricFog"
         _Color("Color", Color) = (1, 1, 1, 1)
         _MinDistance("Min distance", float) = 0
         _MaxDistance("Max distance", float) = 100
+        _MaxHeight("Max height", float) = 100
         _StepSize("Step size", Range(0.1, 20)) = 1
         _DensityMultiplier("Density multiplier", Range(0, 10)) = 1
         _NoiseOffset("Noise offset", float) = 0
@@ -38,6 +39,7 @@ Shader "CutTwice/VolumetricFog"
             float4 _Color;
             float _MinDistance;
             float _MaxDistance;
+            float _MaxHeight;
             float _DensityMultiplier;
             float _StepSize;
             float _NoiseOffset;
@@ -56,6 +58,9 @@ Shader "CutTwice/VolumetricFog"
             
             float get_density(float3 worldPos)
             {
+                if (worldPos.y > _MaxHeight)
+                    return 0;
+
                 float windDirLength = length(_WindDirection.xyz);
                 float3 windDir = windDirLength > HALF_EPS ? _WindDirection.xyz / windDirLength : float3(0, 0, 0);
                 float3 windOffset = windDir * _WindSpeed * _Time.y;
@@ -78,7 +83,7 @@ Shader "CutTwice/VolumetricFog"
 
                 float2 pixelCoords = IN.texcoord * _BlitTexture_TexelSize.zw;
                 float distLimit = min(viewLength, _MaxDistance);
-                float distTravelled = _MinDistance + InterleavedGradientNoise(pixelCoords, (int)(_Time.y / max(HALF_EPS, unity_DeltaTime.x))) * _NoiseOffset;
+                float distTravelled = _MinDistance + InterleavedGradientNoise(pixelCoords, (int)(_Time.y / max(HALF_EPS, unity_DeltaTime.x))) * min(_NoiseOffset, _StepSize);
                 float transmittance = 1;
                 float4 fogCol = _Color;
 
