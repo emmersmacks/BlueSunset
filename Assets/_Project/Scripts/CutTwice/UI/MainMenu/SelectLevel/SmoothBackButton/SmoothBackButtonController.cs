@@ -1,23 +1,33 @@
-﻿using CutTwice.Core.EventBus;
+﻿using System.Threading;
+using CutTwice.Core.GameStates;
+using CutTwice.Core.Lifecycle;
 using CutTwice.Core.RivletUI;
-using CutTwice.UI.MainMenu.Menu;
+using CutTwice.Menu.States;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace CutTwice.UI.MainMenu.SelectLevel.SmoothBackButton
 {
-    public class SmoothBackButtonController : WindowControllerBase<SmoothBackButtonView>
+    public class SmoothBackButtonController : WindowControllerBase<SmoothBackButtonView>, IInitializable
     {
-        private readonly IEventBus _eventBus;
+        private readonly MenuStateMachine _menuStateMachine;
+        private CancellationToken _cancellationToken;
 
-        public SmoothBackButtonController(SmoothBackButtonView view, IEventBus eventBus) : base(view)
+        public SmoothBackButtonController(SmoothBackButtonView view, MenuStateMachine menuStateMachine) : base(view)
         {
-            _eventBus = eventBus;
+            _menuStateMachine = menuStateMachine;
             view.BackButton.onClick.AddListener(OnBackButtonClicked);
+        }
+
+        public UniTask InitAsync(CancellationToken ct)
+        {
+            _cancellationToken = ct;
+            return UniTask.CompletedTask;
         }
 
         private void OnBackButtonClicked()
         {
-            _eventBus.Publish(new PushWindowRequest<MenuWindow>());
-            _eventBus.Publish(new SwitchCameraEvent { CameraType = MenuCameraType.Main });
+            _menuStateMachine.TransitionToAsync<MainMenuState>(_cancellationToken).Forget(Debug.LogException);
         }
     }
 }

@@ -17,7 +17,12 @@ namespace CutTwice.Core.GameStates
 
 	public interface IGlobalState : IState
     {
-        
+
+    }
+
+    public interface IMenuState : IState
+    {
+
     }
 }
 

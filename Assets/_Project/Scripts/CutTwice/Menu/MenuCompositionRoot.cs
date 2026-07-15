@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using CutTwice.Core.EventBus;
 using CutTwice.Core.Factory;
+using CutTwice.Core.GameStates;
 using CutTwice.Core.Initialization;
 using CutTwice.Core.Lifecycle;
 using CutTwice.Core.RivletUI;
 using CutTwice.Menu.Initializers;
+using CutTwice.Menu.States;
 using CutTwice.UI.MainMenu.Credits;
 using CutTwice.UI.MainMenu.Leaderboard;
 using CutTwice.UI.MainMenu.Menu;
@@ -52,7 +54,13 @@ namespace CutTwice.Menu
             
             builder.RegisterSingleton<IWindowFactory, WindowFactory>();
             builder.RegisterSingletonWithLifetime<UIManager>();
-            
+
+            // Menu States
+            builder.RegisterSingletonWithLifetime<MainMenuState>(new List<Type>{ typeof(IMenuState) });
+            builder.RegisterSingletonWithLifetime<SelectLevelState>(new List<Type>{ typeof(IMenuState) });
+            builder.RegisterSingletonWithLifetime<ShopState>(new List<Type>{ typeof(IMenuState) });
+            builder.RegisterSingletonWithLifetime<MenuStateMachine>();
+
             // Initializer
             builder.RegisterSingletonWithLifetime<MenuInitializer>();
         }

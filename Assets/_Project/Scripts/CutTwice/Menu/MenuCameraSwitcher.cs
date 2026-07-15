@@ -23,7 +23,7 @@ namespace CutTwice.Menu
 
         public UniTask InitAsync(CancellationToken ct)
         {
-            SetActiveCamera(_sceneReferences.IdleVirtualCamera, _sceneReferences.PlayVirtualCamera);
+            SetActiveCamera(_sceneReferences.IdleVirtualCamera);
             _eventBus.Subscribe<SwitchCameraEvent>(OnCameraSwitchRequested);
             return UniTask.CompletedTask;
         }
@@ -34,22 +34,33 @@ namespace CutTwice.Menu
             {
                 case MenuCameraType.SelectLevel:
                 {
-                    SetActiveCamera(_sceneReferences.PlayVirtualCamera, _sceneReferences.IdleVirtualCamera);
+                    SetActiveCamera(_sceneReferences.PlayVirtualCamera);
                     break;
                 }
                 case MenuCameraType.Main:
                 {
-                    SetActiveCamera(_sceneReferences.IdleVirtualCamera, _sceneReferences.PlayVirtualCamera);
+                    SetActiveCamera(_sceneReferences.IdleVirtualCamera);
+                    break;
+                }
+                case MenuCameraType.Shop:
+                {
+                    SetActiveCamera(_sceneReferences.ShopVirtualCamera);
                     break;
                 }
             }
-            
         }
 
-        private static void SetActiveCamera(CinemachineVirtualCamera active, CinemachineVirtualCamera inactive)
+        private void SetActiveCamera(CinemachineVirtualCamera active)
         {
-            active.Priority = ActivePriority;
-            inactive.Priority = InactivePriority;
+            foreach (var camera in new[] { _sceneReferences.IdleVirtualCamera, _sceneReferences.PlayVirtualCamera, _sceneReferences.ShopVirtualCamera })
+            {
+                if (camera == null)
+                {
+                    continue;
+                }
+
+                camera.Priority = camera == active ? ActivePriority : InactivePriority;
+            }
         }
 
         public void Dispose()

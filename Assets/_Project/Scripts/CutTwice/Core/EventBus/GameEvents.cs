@@ -9,7 +9,8 @@
     {
         Main,
         SelectLevel,
-        Building
+        Building,
+        Shop
     }
     
     public struct SwitchCameraEvent

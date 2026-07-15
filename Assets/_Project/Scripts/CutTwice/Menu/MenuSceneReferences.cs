@@ -19,5 +19,6 @@ namespace CutTwice.Menu
 
         public CinemachineVirtualCamera IdleVirtualCamera;
         public CinemachineVirtualCamera PlayVirtualCamera;
+        public CinemachineVirtualCamera ShopVirtualCamera;
     }
 }
