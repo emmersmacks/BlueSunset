@@ -1,4 +1,7 @@
-﻿using CutTwice.App.GlobalStates;
+﻿using System;
+using System.Collections.Generic;
+using CutTwice.App.Fade;
+using CutTwice.App.GlobalStates;
 using CutTwice.App.LoadingScreen;
 using CutTwice.Core.GameStates;
 using CutTwice.Core.Initialization;
@@ -25,13 +28,15 @@ namespace CutTwice.App
             
             builder.RegisterSingleton<RuntimeLifecycleManager>(lifecycleManager);
             
-            // Services
-            builder.RegisterSingletonWithLifetime<PurchaseService>();
-            builder.RegisterSingletonWithLifetime<AudioSnapshotService>();
-
             // UI
             builder.RegisterSingleton(typeof(LoadingScreenView), _sceneReferences.LoadingScreen);
             builder.RegisterSingletonWithLifetime<LoadingScreenController>();
+            builder.RegisterSingleton(typeof(FadeView), _sceneReferences.FadeView);
+
+            // Services
+            builder.RegisterSingletonWithLifetime<PurchaseService>();
+            builder.RegisterSingletonWithLifetime<AudioSnapshotService>();
+            builder.RegisterSingletonWithLifetime<FadeService>(new List<Type>{ typeof(IFadeService) });
 
             // AppStateMachine
             builder.RegisterSingleton<IGlobalState, GlobalBootstrapState>();
