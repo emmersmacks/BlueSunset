@@ -2,6 +2,18 @@
 {
     public struct GameOverEvent
     {
-        
+
+    }
+
+    public enum MenuCameraType
+    {
+        Main,
+        SelectLevel,
+        Building
+    }
+    
+    public struct SwitchCameraEvent
+    {
+        public MenuCameraType CameraType;
     }
 }

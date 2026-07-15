@@ -21,7 +21,7 @@ namespace CutTwice.Menu.Initializers
         
         public UniTask InitAsync(CancellationToken ct)
         {
-            _eventBus.Publish(new OpenWindowRequest<MenuWindow>());
+            _eventBus.Publish(new PushWindowRequest<MenuWindow>());
             _loadingScreenController.Hide();
             return UniTask.CompletedTask;
         }

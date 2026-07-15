@@ -11,6 +11,7 @@ using CutTwice.UI.MainMenu.Leaderboard;
 using CutTwice.UI.MainMenu.Menu;
 using CutTwice.UI.MainMenu.Shop;
 using CascadeDI.Builder;
+using CutTwice.UI.MainMenu.SelectLevel;
 
 namespace CutTwice.Menu
 {
@@ -30,6 +31,9 @@ namespace CutTwice.Menu
             var eventBus = new EventBus();
             builder.RegisterSingleton<IEventBus>(eventBus);
 
+            builder.RegisterSingleton<MenuSceneReferences>(_sceneReferences);
+            builder.RegisterSingletonWithLifetime<MenuCameraSwitcher>();
+
             // UI
             builder.RegisterSingleton(typeof(MenuWindowView), _sceneReferences.MenuWindow);
             builder.RegisterSingletonWithLifetime<MenuWindow>(new List<Type>{ typeof(IWindow) });
@@ -39,6 +43,9 @@ namespace CutTwice.Menu
 
             builder.RegisterSingleton(typeof(ShopWindowView), _sceneReferences.ShopWindow);
             builder.RegisterSingletonWithLifetime<ShopWindow>(new List<Type>{ typeof(IWindow) });
+            
+            builder.RegisterSingleton(typeof(SelectLevelWindowView), _sceneReferences.SelectLevelWindowView);
+            builder.RegisterSingletonWithLifetime<SelectLevelWindow>(new List<Type>{ typeof(IWindow) });
             
             builder.RegisterSingleton(typeof(LeaderboardWindowView), _sceneReferences.LeaderboardWindow);
             builder.RegisterSingletonWithLifetime<LeaderboardWindow>(new List<Type>{ typeof(IWindow) });

@@ -5,7 +5,7 @@ using CutTwice.Core.Lifecycle;
 using CutTwice.Core.RivletUI;
 using CutTwice.Gameplay.GlobalStates;
 using CutTwice.UI.MainMenu.Credits;
-using CutTwice.UI.MainMenu.Leaderboard;
+using CutTwice.UI.MainMenu.SelectLevel;
 using CutTwice.UI.MainMenu.Shop;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -14,30 +14,25 @@ namespace CutTwice.UI.MainMenu.Menu.StartGameButton
 {
     public class MenuButtonsController : WindowControllerBase<MenuButtonsView>, IInitializable
     {
-        private CancellationToken _cancellationToken;
-
         private readonly IEventBus _eventBus;
-        private readonly GlobalStateMachine _globalStateMachine;
 
-        public MenuButtonsController(MenuButtonsView view, IEventBus eventBus, GlobalStateMachine globalStateMachine) : base(view)
+        public MenuButtonsController(MenuButtonsView view, IEventBus eventBus) : base(view)
         {
             _eventBus = eventBus;
-            _globalStateMachine = globalStateMachine;
             View.StartButton.onClick.AddListener(StartGame);
             View.CreditsButton.onClick.AddListener(ShowCredits);
             View.ShopButton.onClick.AddListener(ShowShop);
-            View.LeaderboardButton.onClick.AddListener(ShowLeaderboard);
         }
 
         public UniTask InitAsync(CancellationToken ct)
         {
-            _cancellationToken = ct;
             return UniTask.CompletedTask;
         }
 
         private void StartGame()
         {
-            _globalStateMachine.SetStateAsync<GlobalGameState>(_cancellationToken).Forget(Debug.LogException);
+            _eventBus.Publish(new PushWindowRequest<SelectLevelWindow>());
+            _eventBus.Publish(new SwitchCameraEvent { CameraType = MenuCameraType.SelectLevel });
         }
 
         private void ShowCredits()
@@ -48,11 +43,6 @@ namespace CutTwice.UI.MainMenu.Menu.StartGameButton
         private void ShowShop()
         {
             _eventBus.Publish(new PushWindowRequest<ShopWindow>());
-        }
-        
-        private void ShowLeaderboard()
-        {
-            _eventBus.Publish(new PushWindowRequest<LeaderboardWindow>());
         }
     }
 }

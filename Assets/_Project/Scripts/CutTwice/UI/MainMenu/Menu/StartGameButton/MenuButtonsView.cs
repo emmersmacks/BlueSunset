@@ -7,7 +7,6 @@ namespace CutTwice.UI.MainMenu.Menu.StartGameButton
     {
         public Button StartButton;
         public Button ShopButton;
-        public Button LeaderboardButton;
         public Button CreditsButton;
     }
 }
