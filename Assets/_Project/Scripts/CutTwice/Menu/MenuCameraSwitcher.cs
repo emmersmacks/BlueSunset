@@ -3,7 +3,6 @@ using Cinemachine;
 using CutTwice.Core.EventBus;
 using CutTwice.Core.Lifecycle;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 
 namespace CutTwice.Menu
 {
@@ -25,7 +24,10 @@ namespace CutTwice.Menu
             return UniTask.CompletedTask;
         }
 
-        public async UniTask SwitchToAsync(MenuCameraType cameraType, CancellationToken ct)
+        // Starts the Cinemachine blend toward the target vcam without waiting for it to finish -
+        // callers that need the blend to land exactly when some other transition (e.g. a fade)
+        // completes should follow up with CutBlend() once that other transition is done.
+        public void SwitchTo(MenuCameraType cameraType)
         {
             var target = GetCamera(cameraType);
             if (target == null)
@@ -34,7 +36,16 @@ namespace CutTwice.Menu
             }
 
             SetActiveCamera(target);
-            await AwaitBlendCompleteAsync(ct);
+        }
+
+        // Instantly snaps the brain to the currently active vcam, cutting short any in-progress blend.
+        public void CutBlend()
+        {
+            var brain = _sceneReferences.CinemachineBrain;
+            if (brain != null)
+            {
+                brain.ActiveBlend = null;
+            }
         }
 
         private CinemachineVirtualCamera GetCamera(MenuCameraType cameraType)
@@ -59,18 +70,6 @@ namespace CutTwice.Menu
 
                 camera.Priority = camera == active ? ActivePriority : InactivePriority;
             }
-        }
-
-        private async UniTask AwaitBlendCompleteAsync(CancellationToken ct)
-        {
-            var brain = _sceneReferences.CinemachineBrain;
-            if (brain == null)
-            {
-                return;
-            }
-            
-            await UniTask.WaitUntil(() => !brain.IsBlending, cancellationToken: ct);
-            Debug.Log(brain.IsBlending);
         }
     }
 }

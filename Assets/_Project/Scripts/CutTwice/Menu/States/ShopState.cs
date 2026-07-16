@@ -2,6 +2,7 @@ using System.Threading;
 using CutTwice.Core.EventBus;
 using CutTwice.Core.GameStates;
 using CutTwice.Core.RivletUI;
+using CutTwice.Menu;
 using CutTwice.Services;
 using CutTwice.UI.MainMenu.Shop;
 using Cysharp.Threading.Tasks;
@@ -23,9 +24,10 @@ namespace CutTwice.Menu.States
 
         public async UniTask EnterAsync(IStateMachine stateMachine, CancellationToken ct)
         {
-            var fadeTask = _fadeService.FadeOutAsync(ct);
-            var switchCameraTask = _cameraSwitcher.SwitchToAsync(MenuCameraType.Shop, ct);
-            await UniTask.WhenAll(fadeTask, switchCameraTask);
+            _cameraSwitcher.SwitchTo(MenuCameraType.Shop);
+            await _fadeService.FadeOutAsync(ct);
+            await UniTask.Delay(200, cancellationToken: ct);
+            _cameraSwitcher.CutBlend();
 
             _eventBus.Publish(new PushWindowRequest<ShopWindow>());
             await _fadeService.FadeInAsync(ct);

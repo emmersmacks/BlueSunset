@@ -24,11 +24,12 @@ namespace CutTwice.Menu.States
 
         public async UniTask EnterAsync(IStateMachine stateMachine, CancellationToken ct)
         {
+            _cameraSwitcher.SwitchTo(MenuCameraType.Main);
             await _fadeService.FadeOutAsync(ct);
+            await UniTask.Delay(200, cancellationToken: ct);
+            _cameraSwitcher.CutBlend();
 
             _eventBus.Publish(new PushWindowRequest<MenuWindow>());
-            await _cameraSwitcher.SwitchToAsync(MenuCameraType.Main, ct);
-
             await _fadeService.FadeInAsync(ct);
         }
 
