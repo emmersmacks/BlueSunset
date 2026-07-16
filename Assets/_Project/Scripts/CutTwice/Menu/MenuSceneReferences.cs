@@ -17,6 +17,7 @@ namespace CutTwice.Menu
         public MenuWindowView MenuWindow;
         public ShopWindowView ShopWindow;
 
+        public CinemachineBrain CinemachineBrain;
         public CinemachineVirtualCamera IdleVirtualCamera;
         public CinemachineVirtualCamera PlayVirtualCamera;
         public CinemachineVirtualCamera ShopVirtualCamera;

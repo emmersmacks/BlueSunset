@@ -438,6 +438,7 @@ MonoBehaviour:
     LeaderboardWindow: {fileID: 8188676009002790294}
     MenuWindow: {fileID: 886438270}
     ShopWindow: {fileID: 1714780657}
+    CinemachineBrain: {fileID: 1799873610}
     IdleVirtualCamera: {fileID: 1510945914}
     PlayVirtualCamera: {fileID: 1492334752}
     ShopVirtualCamera: {fileID: 1495118383}
@@ -4532,7 +4533,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 11
+  m_Priority: 1
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
@@ -4657,7 +4658,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1452858473}
-  - {fileID: 1799873607}
   - {fileID: 1144707813}
   - {fileID: 691248385}
   - {fileID: 342792973}
@@ -6006,12 +6006,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1799873604}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.70710635, z: 0, w: 0.7071073}
-  m_LocalPosition: {x: 5.741, y: 2, z: 13.544}
+  m_LocalRotation: {x: -0.10453068, y: 0.15403478, z: 0.025073508, w: 0.98220056}
+  m_LocalPosition: {x: -19.517681, y: 0.87, z: -3.9024582}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1511570917}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -12.302, y: 91.444, z: 3.624}
 --- !u!114 &1799873608
 MonoBehaviour:
@@ -7247,6 +7247,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 42336344}
   - {fileID: 1450117282}
+  - {fileID: 1799873607}
   - {fileID: 886438268}
   - {fileID: 2071932312}
   - {fileID: 8188676009002790293}

@@ -12,20 +12,22 @@ namespace CutTwice.Menu.States
     {
         private readonly IEventBus _eventBus;
         private readonly IFadeService _fadeService;
+        private readonly MenuCameraSwitcher _cameraSwitcher;
 
-        public ShopState(IEventBus eventBus, IFadeService fadeService)
+        public ShopState(IEventBus eventBus, IFadeService fadeService, MenuCameraSwitcher cameraSwitcher)
         {
             _eventBus = eventBus;
             _fadeService = fadeService;
+            _cameraSwitcher = cameraSwitcher;
         }
 
         public async UniTask EnterAsync(IStateMachine stateMachine, CancellationToken ct)
         {
-            await _fadeService.FadeOutAsync(ct);
+            var fadeTask = _fadeService.FadeOutAsync(ct);
+            var switchCameraTask = _cameraSwitcher.SwitchToAsync(MenuCameraType.Shop, ct);
+            await UniTask.WhenAll(fadeTask, switchCameraTask);
 
             _eventBus.Publish(new PushWindowRequest<ShopWindow>());
-            _eventBus.Publish(new SwitchCameraEvent { CameraType = MenuCameraType.Shop });
-
             await _fadeService.FadeInAsync(ct);
         }
 

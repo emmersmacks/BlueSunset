@@ -1,53 +1,51 @@
-﻿using System;
 using System.Threading;
 using Cinemachine;
 using CutTwice.Core.EventBus;
 using CutTwice.Core.Lifecycle;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace CutTwice.Menu
 {
-    public class MenuCameraSwitcher : IInitializable, IDisposable
+    public class MenuCameraSwitcher : IInitializable
     {
         private const int ActivePriority = 20;
         private const int InactivePriority = 10;
 
         private readonly MenuSceneReferences _sceneReferences;
-        private readonly IEventBus _eventBus;
 
-        public MenuCameraSwitcher(MenuSceneReferences sceneReferences, IEventBus eventBus)
+        public MenuCameraSwitcher(MenuSceneReferences sceneReferences)
         {
             _sceneReferences = sceneReferences;
-            _eventBus = eventBus;
         }
 
         public UniTask InitAsync(CancellationToken ct)
         {
             SetActiveCamera(_sceneReferences.IdleVirtualCamera);
-            _eventBus.Subscribe<SwitchCameraEvent>(OnCameraSwitchRequested);
             return UniTask.CompletedTask;
         }
 
-        private void OnCameraSwitchRequested(SwitchCameraEvent evt)
+        public async UniTask SwitchToAsync(MenuCameraType cameraType, CancellationToken ct)
         {
-            switch (evt.CameraType)
+            var target = GetCamera(cameraType);
+            if (target == null)
             {
-                case MenuCameraType.SelectLevel:
-                {
-                    SetActiveCamera(_sceneReferences.PlayVirtualCamera);
-                    break;
-                }
-                case MenuCameraType.Main:
-                {
-                    SetActiveCamera(_sceneReferences.IdleVirtualCamera);
-                    break;
-                }
-                case MenuCameraType.Shop:
-                {
-                    SetActiveCamera(_sceneReferences.ShopVirtualCamera);
-                    break;
-                }
+                return;
             }
+
+            SetActiveCamera(target);
+            await AwaitBlendCompleteAsync(ct);
+        }
+
+        private CinemachineVirtualCamera GetCamera(MenuCameraType cameraType)
+        {
+            return cameraType switch
+            {
+                MenuCameraType.Main => _sceneReferences.IdleVirtualCamera,
+                MenuCameraType.SelectLevel => _sceneReferences.PlayVirtualCamera,
+                MenuCameraType.Shop => _sceneReferences.ShopVirtualCamera,
+                _ => null
+            };
         }
 
         private void SetActiveCamera(CinemachineVirtualCamera active)
@@ -63,9 +61,16 @@ namespace CutTwice.Menu
             }
         }
 
-        public void Dispose()
+        private async UniTask AwaitBlendCompleteAsync(CancellationToken ct)
         {
-            _eventBus.Unsubscribe<SwitchCameraEvent>(OnCameraSwitchRequested);
+            var brain = _sceneReferences.CinemachineBrain;
+            if (brain == null)
+            {
+                return;
+            }
+            
+            await UniTask.WaitUntil(() => !brain.IsBlending, cancellationToken: ct);
+            Debug.Log(brain.IsBlending);
         }
     }
 }

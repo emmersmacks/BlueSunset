@@ -12,9 +12,4 @@
         Building,
         Shop
     }
-    
-    public struct SwitchCameraEvent
-    {
-        public MenuCameraType CameraType;
-    }
 }
