@@ -18,12 +18,7 @@ namespace CutTwice.App
 {
     public class AppCompositionRoot : CompositionRoot
     {
-        private readonly AppSceneReferences _sceneReferences;
-
-        public AppCompositionRoot(AppSceneReferences sceneReferences)
-        {
-            _sceneReferences = sceneReferences;
-        }
+        public AppSceneReferences SceneReferences;
 
         public override void Compose(IContainerBuilder builder, RuntimeLifecycleManager lifecycleManager)
         {
@@ -31,9 +26,9 @@ namespace CutTwice.App
             builder.RegisterSingleton<RuntimeLifecycleManager>(lifecycleManager);
             
             // UI
-            builder.RegisterSingleton(typeof(LoadingScreenView), _sceneReferences.LoadingScreen);
+            builder.RegisterSingleton(typeof(LoadingScreenView), SceneReferences.LoadingScreen);
             builder.RegisterSingletonWithLifetime<LoadingScreenController>();
-            builder.RegisterSingleton(typeof(FadeView), _sceneReferences.FadeView);
+            builder.RegisterSingleton(typeof(FadeView), SceneReferences.FadeView);
 
             // Services
             builder.RegisterSingletonWithLifetime<PurchaseService>();
@@ -55,9 +50,9 @@ namespace CutTwice.App
 
             // Map progress
             var mapProgressService = new MapProgressService();
-            if (_sceneReferences.HardcodedAdventureMap != null)
+            if (SceneReferences.HardcodedAdventureMap != null)
             {
-                mapProgressService.SelectMap(_sceneReferences.HardcodedAdventureMap);
+                mapProgressService.SelectMap(SceneReferences.HardcodedAdventureMap);
             }
             builder.RegisterSingleton<MapProgressService>(mapProgressService);
             builder.RegisterSingleton<AdventureFlowService>();

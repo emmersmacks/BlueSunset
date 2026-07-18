@@ -90,7 +90,7 @@ namespace CutTwice.Gameplay.Runtime.Map
             var transition = state.AvailableExits.First(t => t.Target.InstanceId == target.InstanceId);
             state.MoveTo(transition);
             
-            Debug.Log($"[MAPS]: MarkLocationCompleted '{state.Map.DisplayName}' as {state.IsCompleted}");
+            Debug.Log($"[MAPS]: MarkLocationCompleted '{state.Map.DisplayName}' as {state.CurrentNode}");
         }
 
         public bool IsCurrentPositionDeadEnd()

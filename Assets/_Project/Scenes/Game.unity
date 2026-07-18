@@ -1467,6 +1467,7 @@ GameObject:
   m_Component:
   - component: {fileID: 995425901}
   - component: {fileID: 995425902}
+  - component: {fileID: 995425903}
   m_Layer: 0
   m_Name: Bootstrap
   m_TagString: Untagged
@@ -1502,7 +1503,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CutTwice.Game.GameBootstrap
   InstantiateAppBootstrap: 1
-  SceneReferences:
+  CompositionRoot: {fileID: 995425903}
+--- !u!114 &995425903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 995425899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff6d95f9f1f14a06b72348910cfa32fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CutTwice.Gameplay.GameCompositionRoot
+  GameSceneReferences:
     PostProcessing: {fileID: 832575518}
     Player: {fileID: 7362608118278196462}
     PlayerInitialPosition: {fileID: 1003828617}

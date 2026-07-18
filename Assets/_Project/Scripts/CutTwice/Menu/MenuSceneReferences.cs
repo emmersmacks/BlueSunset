@@ -1,5 +1,6 @@
 ﻿using System;
 using Cinemachine;
+using CutTwice.Core.Initialization;
 using CutTwice.UI.MainMenu.Credits;
 using CutTwice.UI.MainMenu.Leaderboard;
 using CutTwice.UI.MainMenu.Menu;
@@ -11,15 +12,11 @@ namespace CutTwice.Menu
     [Serializable]
     public class MenuSceneReferences
     {
+        public CompositionRoot Location;
         public SelectLevelWindowView SelectLevelWindowView;
         public CreditsWindowView CreditsWindow;
         public LeaderboardWindowView LeaderboardWindow;
         public MenuWindowView MenuWindow;
-        public ShopWindowView ShopWindow;
-
-        public CinemachineBrain CinemachineBrain;
-        public CinemachineVirtualCamera IdleVirtualCamera;
-        public CinemachineVirtualCamera PlayVirtualCamera;
-        public CinemachineVirtualCamera ShopVirtualCamera;
+        public CameraSwitchContext CameraSwitchContext;
     }
 }

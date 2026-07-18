@@ -11,7 +11,6 @@ using CutTwice.Menu.States;
 using CutTwice.UI.MainMenu.Credits;
 using CutTwice.UI.MainMenu.Leaderboard;
 using CutTwice.UI.MainMenu.Menu;
-using CutTwice.UI.MainMenu.Shop;
 using CascadeDI.Builder;
 using CutTwice.UI.MainMenu.SelectLevel;
 
@@ -19,12 +18,7 @@ namespace CutTwice.Menu
 {
     public class MenuCompositionRoot : CompositionRoot
     {
-        private readonly MenuSceneReferences _sceneReferences;
-
-        public MenuCompositionRoot(MenuSceneReferences sceneReferences)
-        {
-            _sceneReferences = sceneReferences;
-        }
+        public MenuSceneReferences SceneReferences;
         
         public override void Compose(IContainerBuilder builder, RuntimeLifecycleManager lifecycleManager)
         {
@@ -33,23 +27,23 @@ namespace CutTwice.Menu
             var eventBus = new EventBus();
             builder.RegisterSingleton<IEventBus>(eventBus);
 
-            builder.RegisterSingleton<MenuSceneReferences>(_sceneReferences);
+            builder.RegisterSingleton<CameraSwitchContext>(SceneReferences.CameraSwitchContext);
             builder.RegisterSingletonWithLifetime<MenuCameraSwitcher>();
+            
+            // Roots
+            SceneReferences.Location.Compose(builder, lifecycleManager);
 
             // UI
-            builder.RegisterSingleton(typeof(MenuWindowView), _sceneReferences.MenuWindow);
+            builder.RegisterSingleton(typeof(MenuWindowView), SceneReferences.MenuWindow);
             builder.RegisterSingletonWithLifetime<MenuWindow>(new List<Type>{ typeof(IWindow) });
 
-            builder.RegisterSingleton(typeof(CreditsWindowView), _sceneReferences.CreditsWindow);
+            builder.RegisterSingleton(typeof(CreditsWindowView), SceneReferences.CreditsWindow);
             builder.RegisterSingletonWithLifetime<CreditsWindow>(new List<Type>{ typeof(IWindow) });
-
-            builder.RegisterSingleton(typeof(ShopWindowView), _sceneReferences.ShopWindow);
-            builder.RegisterSingletonWithLifetime<ShopWindow>(new List<Type>{ typeof(IWindow) });
             
-            builder.RegisterSingleton(typeof(SelectLevelWindowView), _sceneReferences.SelectLevelWindowView);
+            builder.RegisterSingleton(typeof(SelectLevelWindowView), SceneReferences.SelectLevelWindowView);
             builder.RegisterSingletonWithLifetime<SelectLevelWindow>(new List<Type>{ typeof(IWindow) });
             
-            builder.RegisterSingleton(typeof(LeaderboardWindowView), _sceneReferences.LeaderboardWindow);
+            builder.RegisterSingleton(typeof(LeaderboardWindowView), SceneReferences.LeaderboardWindow);
             builder.RegisterSingletonWithLifetime<LeaderboardWindow>(new List<Type>{ typeof(IWindow) });
             
             builder.RegisterSingleton<IWindowFactory, WindowFactory>();

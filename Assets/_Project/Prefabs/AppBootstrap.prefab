@@ -214,6 +214,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2999646845748144973}
   - component: {fileID: 1764295485334338590}
+  - component: {fileID: 2201921576540242471}
   m_Layer: 0
   m_Name: AppBootstrap
   m_TagString: Untagged
@@ -251,6 +252,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CutTwice.App.AppBootstrap
   InstantiateAppBootstrap: 0
+  CompositionRoot: {fileID: 2201921576540242471}
+--- !u!114 &2201921576540242471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7639451450603492713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c440e8517a77481e81b9300182001b73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CutTwice.App.AppCompositionRoot
   SceneReferences:
     LoadingScreen: {fileID: 3009821251858065278}
     FadeView: {fileID: 6467617636693369020}

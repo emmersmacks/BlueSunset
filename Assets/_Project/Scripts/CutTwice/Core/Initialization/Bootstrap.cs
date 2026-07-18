@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using CutTwice.App;
 using CutTwice.Core.Addressables;
@@ -13,12 +14,11 @@ namespace CutTwice.Core.Initialization
 {
     public abstract class Bootstrap : MonoBehaviour
     {
-        public bool InstantiateAppBootstrap;
+        public bool InstantiateAppBootstrap = true;
+        public CompositionRoot CompositionRoot;
+        
+        [NonSerialized]
         public IContainer Container;
-        
-        protected CompositionRoot CompositionRoot;
-        
-        protected abstract CompositionRoot CreateCompositionRoot();
         
         private void Awake()
         {
@@ -35,8 +35,6 @@ namespace CutTwice.Core.Initialization
                 appBootstrap = bootstrapObj.GetComponent<AppBootstrap>();
             }
             
-            CompositionRoot = CreateCompositionRoot();
-
             var builder = appBootstrap.Container == null ? new ContainerBuilder() : appBootstrap.Container.CreateChildBuilder();
             var lifecycleManager = LifecycleManagerUtils.CreateLifecycleManager(gameObject.name);
             

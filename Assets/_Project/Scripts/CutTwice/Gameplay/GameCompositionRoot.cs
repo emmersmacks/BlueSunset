@@ -28,12 +28,7 @@ namespace CutTwice.Gameplay
 {
     public class GameCompositionRoot : CompositionRoot
     {
-        private readonly GameSceneReferences _gameSceneReferences;
-
-        public GameCompositionRoot(GameSceneReferences gameSceneReferences)
-        {
-            _gameSceneReferences = gameSceneReferences;
-        }
+        public GameSceneReferences GameSceneReferences;
 
         public override void Compose(IContainerBuilder builder, RuntimeLifecycleManager lifecycleManager)
         {
@@ -54,28 +49,28 @@ namespace CutTwice.Gameplay
             builder.RegisterSingleton<RuntimeLifecycleManager>(lifecycleManager);
             
             // Gameplay
-            var playerInputController = lifecycleManager.Register(new PlayerInputController(_gameSceneReferences.PlayerCamera));
+            var playerInputController = lifecycleManager.Register(new PlayerInputController(GameSceneReferences.PlayerCamera));
             builder.RegisterSingleton(typeof(PlayerInputController), playerInputController);
-            var playerCarPresenter = _gameSceneReferences.Player.GetComponent<PlayerCarPresenter>();
+            var playerCarPresenter = GameSceneReferences.Player.GetComponent<PlayerCarPresenter>();
             var playerCarController = lifecycleManager.Register(new PlayerCarController(playerCarPresenter, playerInputController));
-            var playerSleepPresenter = _gameSceneReferences.Player.GetComponent<PlayerSleepPresenter>();
+            var playerSleepPresenter = GameSceneReferences.Player.GetComponent<PlayerSleepPresenter>();
             var playerSleepController = lifecycleManager.Register(new PlayerSleepController(playerSleepPresenter));
             builder.RegisterSingleton<PlayerSleepController>(playerSleepController);
-            var steeringInterferencePresenter = _gameSceneReferences.Player.GetComponent<SteeringInterferencePresenter>();
+            var steeringInterferencePresenter = GameSceneReferences.Player.GetComponent<SteeringInterferencePresenter>();
             var steeringInterferenceController = lifecycleManager.Register(new SteeringInterferenceController(steeringInterferencePresenter, playerSleepController));
             
-            var infiniteRoadController = lifecycleManager.Register(new InfiniteRoadController(_gameSceneReferences.InfiniteRoadPresenter));
+            var infiniteRoadController = lifecycleManager.Register(new InfiniteRoadController(GameSceneReferences.InfiniteRoadPresenter));
             builder.RegisterSingleton<InfiniteRoadController>(infiniteRoadController);
             
-            var rotateBackviewMirrorController = lifecycleManager.Register(new RotateMirrorController(_gameSceneReferences.RotateBackviewMirrorPresenter, playerInputController));
-            var backviewReflectionObjectController = lifecycleManager.Register(new ReflectionObjectController(_gameSceneReferences.BackviewReflectionObjectPresenter, rotateBackviewMirrorController));
-            var backviewMirrorHazardController = lifecycleManager.Register(new BackviewMirrorHazardController(_gameSceneReferences.BackviewMirrorHazardPresenter, backviewReflectionObjectController, rotateBackviewMirrorController, eventBus));
+            var rotateBackviewMirrorController = lifecycleManager.Register(new RotateMirrorController(GameSceneReferences.RotateBackviewMirrorPresenter, playerInputController));
+            var backviewReflectionObjectController = lifecycleManager.Register(new ReflectionObjectController(GameSceneReferences.BackviewReflectionObjectPresenter, rotateBackviewMirrorController));
+            var backviewMirrorHazardController = lifecycleManager.Register(new BackviewMirrorHazardController(GameSceneReferences.BackviewMirrorHazardPresenter, backviewReflectionObjectController, rotateBackviewMirrorController, eventBus));
             builder.RegisterSingleton(typeof(BackviewMirrorHazardController), backviewMirrorHazardController);
             
-            var rotateSideviewMirrorController = lifecycleManager.Register(new RotateMirrorController(_gameSceneReferences.RotateSideviewMirrorPresenter, playerInputController));
-            var sideviewReflectionObjectController = lifecycleManager.Register(new ReflectionObjectController(_gameSceneReferences.SideviewReflectionObjectPresenter, rotateSideviewMirrorController));
-            var sideviewMirrorHazardController = lifecycleManager.Register(new SideviewMirrorHazardController(_gameSceneReferences.SideviewMirrorHazardPresenter, sideviewReflectionObjectController, rotateSideviewMirrorController, eventBus));
-            var sideviewHazardSoundLoopController = lifecycleManager.Register(new MusicLoopController(_gameSceneReferences.LeftSideHazardLoopSoundPresenter));
+            var rotateSideviewMirrorController = lifecycleManager.Register(new RotateMirrorController(GameSceneReferences.RotateSideviewMirrorPresenter, playerInputController));
+            var sideviewReflectionObjectController = lifecycleManager.Register(new ReflectionObjectController(GameSceneReferences.SideviewReflectionObjectPresenter, rotateSideviewMirrorController));
+            var sideviewMirrorHazardController = lifecycleManager.Register(new SideviewMirrorHazardController(GameSceneReferences.SideviewMirrorHazardPresenter, sideviewReflectionObjectController, rotateSideviewMirrorController, eventBus));
+            var sideviewHazardSoundLoopController = lifecycleManager.Register(new MusicLoopController(GameSceneReferences.LeftSideHazardLoopSoundPresenter));
             builder.RegisterSingleton(typeof(SideviewMirrorHazardController), sideviewMirrorHazardController);
 
 
@@ -89,9 +84,9 @@ namespace CutTwice.Gameplay
             // Orchestration
             
             // --- Scenario
-            var initialStage = lifecycleManager.Register(new InitialStage(_gameSceneReferences.Player, _gameSceneReferences.PlayerInitialPosition));
-            var openEyeStage = lifecycleManager.Register(new OpenEyeStage(_gameSceneReferences.PostProcessing));
-            var scenarioSystem = new ScenarioSystem(_gameSceneReferences.ScenarioManagerSettings, playerInputController, new ScenarioStage[]
+            var initialStage = lifecycleManager.Register(new InitialStage(GameSceneReferences.Player, GameSceneReferences.PlayerInitialPosition));
+            var openEyeStage = lifecycleManager.Register(new OpenEyeStage(GameSceneReferences.PostProcessing));
+            var scenarioSystem = new ScenarioSystem(GameSceneReferences.ScenarioManagerSettings, playerInputController, new ScenarioStage[]
             {
                 initialStage,
                 openEyeStage,
@@ -121,10 +116,10 @@ namespace CutTwice.Gameplay
 
         private void ComposeUIModule(IContainerBuilder builder)
         {
-            builder.RegisterSingleton(typeof(GameHUDWindowView), _gameSceneReferences.gameHUDWindowView);
+            builder.RegisterSingleton(typeof(GameHUDWindowView), GameSceneReferences.gameHUDWindowView);
             builder.RegisterSingletonWithLifetime<GameHUDWindow>(new List<Type>{ typeof(IWindow) });
             
-            builder.RegisterSingleton(typeof(GameOverWindowView), _gameSceneReferences.gameOverWindowView);
+            builder.RegisterSingleton(typeof(GameOverWindowView), GameSceneReferences.gameOverWindowView);
             builder.RegisterSingletonWithLifetime<GameOverWindow>(new List<Type>{ typeof(IWindow) });
 
             builder.RegisterSingleton<IWindowFactory, WindowFactory>();

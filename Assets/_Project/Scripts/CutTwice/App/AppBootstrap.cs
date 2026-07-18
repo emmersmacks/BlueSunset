@@ -8,13 +8,6 @@ namespace CutTwice.App
 {
     public class AppBootstrap : Bootstrap
     {
-        public AppSceneReferences SceneReferences;
-
-        protected override CompositionRoot CreateCompositionRoot()
-        {
-            return new AppCompositionRoot(SceneReferences);
-        }
-
         protected override UniTask InitAsync(IScope scope, CancellationToken cancellationToken)
         {
             var appLifecycleManager = scope.Resolve<RuntimeLifecycleManager>();
