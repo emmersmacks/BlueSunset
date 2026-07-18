@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using CutTwice.Core.EventBus;
 using CutTwice.Core.GameStates;
+using CutTwice.Gameplay.Modes;
 using CutTwice.Gameplay.Runtime.Chunks;
 using CutTwice.Gameplay.Runtime.Chunks.ModuleLoader.Dto;
 using CutTwice.Gameplay.Runtime.Chunks.Services;
@@ -17,6 +18,7 @@ namespace CutTwice.Gameplay.GameStates
         private readonly ObstacleRuntimeController _runtime;
         private readonly IEventBus _eventBus;
         private readonly GameSession _gameSession;
+        private readonly AdventureFlowService _adventureFlowService;
 
         private CancellationTokenSource _loopCts;
         private IStateMachine _stateMachine;
@@ -26,13 +28,15 @@ namespace CutTwice.Gameplay.GameStates
             ObstacleSequenceBuilder builder,
             ObstacleRuntimeController runtime,
             IEventBus eventBus,
-            GameSession gameSession)
+            GameSession gameSession,
+            AdventureFlowService adventureFlowService)
         {
             _service = service;
             _builder = builder;
             _runtime = runtime;
             _eventBus = eventBus;
             _gameSession = gameSession;
+            _adventureFlowService = adventureFlowService;
         }
 
         public async UniTask EnterAsync(IStateMachine stateMachine, CancellationToken ct)
@@ -74,6 +78,7 @@ namespace CutTwice.Gameplay.GameStates
         {
             _gameSession.Stop();
             _loopCts.Cancel();
+            _adventureFlowService.HandleRunFailed();
             _stateMachine.SetStateAsync<EndGameState>(_appCt).Forget(Debug.LogException);
         }
 
@@ -81,7 +86,10 @@ namespace CutTwice.Gameplay.GameStates
         {
             _gameSession.Stop();
             _loopCts.Cancel();
-            _stateMachine.SetStateAsync<EndGameState>(_appCt).Forget(Debug.LogException);
+            if (!_adventureFlowService.TryHandleRunCompleted(_appCt))
+            {
+                _stateMachine.SetStateAsync<EndGameState>(_appCt).Forget(Debug.LogException);
+            }
         }
 
         public void Exit()

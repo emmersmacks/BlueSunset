@@ -4,5 +4,6 @@
     {
         public static string Game = "Game";
         public static string MainMenu = "MainMenu";
+        public static string Location = "Location";
     }
 }

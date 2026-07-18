@@ -254,6 +254,7 @@ MonoBehaviour:
   SceneReferences:
     LoadingScreen: {fileID: 3009821251858065278}
     FadeView: {fileID: 6467617636693369020}
+    HardcodedAdventureMap: {fileID: 11400000, guid: 8445b6203583450479b74468f8d00277, type: 2}
 --- !u!1001 &7150625446856334661
 PrefabInstance:
   m_ObjectHideFlags: 0
