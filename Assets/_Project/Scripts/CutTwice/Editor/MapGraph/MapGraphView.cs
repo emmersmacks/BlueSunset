@@ -78,6 +78,8 @@ namespace CutTwice.Editor.MapGraph
             {
                 view.RefreshRootBadge(_map.RootInstanceId);
             }
+
+            ApplyLayout();
         }
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
@@ -265,6 +267,8 @@ namespace CutTwice.Editor.MapGraph
             }
 
             Undo.CollapseUndoOperations(undoGroup);
+
+            ApplyLayout();
 
             return change;
         }

@@ -47,6 +47,8 @@ namespace CutTwice.Editor.MapGraph
 
             RefreshExpandedState();
             RefreshPorts();
+
+            capabilities &= ~Capabilities.Movable;
         }
 
         public void RefreshRootBadge(string rootInstanceId)

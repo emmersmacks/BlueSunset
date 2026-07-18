@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace CutTwice.Gameplay.Runtime.Map
 {
-    [CreateAssetMenu(fileName = "MapDefinition", menuName = "CutTwice/Map/MapDefinition")]
     public class MapDefinition : ScriptableObject
     {
         [Header("Shop Metadata")]
