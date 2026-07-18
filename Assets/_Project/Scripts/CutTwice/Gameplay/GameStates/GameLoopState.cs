@@ -43,6 +43,7 @@ namespace CutTwice.Gameplay.GameStates
             _loopCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
 
             _eventBus.Subscribe<GameOverEvent>(OnGameOverRequested);
+            _eventBus.Subscribe<RunCompletedEvent>(OnRunCompleted);
             _gameSession.StartNewRun();
 
             var sequence = await LoadSequenceAsync(new SequenceModulePreviewDto { Name = "DefaultSequenceModule" }, _loopCts.Token);
@@ -76,9 +77,17 @@ namespace CutTwice.Gameplay.GameStates
             _stateMachine.SetStateAsync<EndGameState>(_appCt).Forget(Debug.LogException);
         }
 
+        private void OnRunCompleted(RunCompletedEvent evt)
+        {
+            _gameSession.Stop();
+            _loopCts.Cancel();
+            _stateMachine.SetStateAsync<EndGameState>(_appCt).Forget(Debug.LogException);
+        }
+
         public void Exit()
         {
             _eventBus.Unsubscribe<GameOverEvent>(OnGameOverRequested);
+            _eventBus.Unsubscribe<RunCompletedEvent>(OnRunCompleted);
             _loopCts?.Cancel();
             _loopCts?.Dispose();
             _loopCts = null;

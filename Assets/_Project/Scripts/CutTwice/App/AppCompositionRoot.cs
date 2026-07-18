@@ -8,6 +8,7 @@ using CutTwice.Core.Initialization;
 using CutTwice.Core.Lifecycle;
 using CutTwice.Gameplay;
 using CutTwice.Gameplay.GlobalStates;
+using CutTwice.Gameplay.Modes;
 using CutTwice.Menu.GlobalStates;
 using CutTwice.Services;
 using CascadeDI.Builder;
@@ -46,6 +47,9 @@ namespace CutTwice.App
             
             // Player data
             PlayerData.Load();
+
+            // Game mode
+            builder.RegisterSingleton<GameModeContext>(new GameModeContext());
             
             builder.RegisterSingletonWithLifetime<AppInitializer>();
         }

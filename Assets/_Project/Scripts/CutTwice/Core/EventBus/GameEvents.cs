@@ -5,6 +5,11 @@
 
     }
 
+    public struct RunCompletedEvent
+    {
+
+    }
+
     public enum MenuCameraType
     {
         Main,

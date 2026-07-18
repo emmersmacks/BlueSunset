@@ -8,6 +8,7 @@ using CutTwice.Core.Lifecycle;
 using CutTwice.Core.RivletUI;
 using CutTwice.Gameplay.Factories;
 using CutTwice.Gameplay.GameStates;
+using CutTwice.Gameplay.Modes;
 using CutTwice.Gameplay.Runtime.Chunks;
 using CutTwice.Gameplay.Runtime.Chunks.Actions;
 using CutTwice.Gameplay.Runtime.Chunks.ModuleLoader;
@@ -115,6 +116,7 @@ namespace CutTwice.Gameplay
             
             // Session
             builder.RegisterSingletonWithLifetime<GameSession>();
+            builder.RegisterSingletonWithLifetime<DistanceTracker>();
         }
 
         private void ComposeUIModule(IContainerBuilder builder)

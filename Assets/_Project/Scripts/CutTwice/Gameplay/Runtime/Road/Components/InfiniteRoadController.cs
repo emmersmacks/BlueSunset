@@ -6,6 +6,7 @@ namespace CutTwice.Gameplay.Runtime.Road.Components
 {
     public class InfiniteRoadController : ITickable
     {
+        public float MovementSpeed => _presenter.moveSpeed;
         private readonly InfiniteRoadPresenter _presenter;
 
         private bool _startStop;
